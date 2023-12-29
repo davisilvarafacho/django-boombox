@@ -32,9 +32,12 @@ DJANGO_APPS = [
 ]
 
 LIBS_APPS = [
+    # rest frameowrk e ecosistema
     "rest_framework",
     "corsheaders",
     "django_filters",
+    # libs utilitárias
+    "django_extensions",
 ]
 
 # aqui ficam os apps criados por você e sua equipe é uma preferência
