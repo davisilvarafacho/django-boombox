@@ -32,7 +32,7 @@ DJANGO_APPS = [
 ]
 
 LIBS_APPS = [
-    # rest frameowrk e ecosistema
+    # rest framework e ecosistema
     "rest_framework",
     "corsheaders",
     "django_filters",
