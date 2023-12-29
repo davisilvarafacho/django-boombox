@@ -4,15 +4,15 @@ from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-DEBUG = os.environ.get('DJANGO_DEBUG') == 'True'
+DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
-MODE = os.environ.get('DJANGO_MODE')
+MODE = os.environ.get("DJANGO_MODE")
 
-DEV = MODE == 'DEV'
+DEV = MODE == "DEV"
 
-PROD = MODE == 'PROD'
+PROD = MODE == "PROD"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -45,7 +45,6 @@ BOOMBOX_APPS = [
     "apps.system.base",
     "apps.system.core",
     "apps.system.conf",
-
     "apps.users",
 ]
 
@@ -100,16 +99,15 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     },
-
     # Caso queira utilizar o postgres, remova a configuração de cima
     # e renome a configuração abaixo para "default"
     "postgres": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('DATABASE_NAME'),
-        "USER": os.environ.get('DATABASE_USER'),
-        "PASSWORD": os.environ.get('DATABASE_PASSWORD'),
-        "HOST": os.environ.get('DATABASE_HOST'),
-        "PORT": os.environ.get('DATABASE_PORT'),
+        "NAME": os.environ.get("DATABASE_NAME"),
+        "USER": os.environ.get("DATABASE_USER"),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+        "HOST": os.environ.get("DATABASE_HOST"),
+        "PORT": os.environ.get("DATABASE_PORT"),
     },
 }
 
@@ -184,10 +182,8 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=90 if DEBUG else 1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=120 if DEBUG else 3),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.CustomTokenObtainPairSerializer",
-
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "sub",
-
     "AUDIENCE": None,
     "ISSUER": None,
 }
