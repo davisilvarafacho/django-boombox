@@ -105,11 +105,11 @@ DATABASES = {
     # e renome a configuração abaixo para "default"
     "postgres": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('DJANGO_DB_NAME'),
-        "USER": os.environ.get('DJANGO_DB_USER'),
-        "PASSWORD": os.environ.get('DJANGO_DB_PASSWORD'),
-        "HOST": os.environ.get('DJANGO_DB_HOST'),
-        "PORT": os.environ.get('DJANGO_DB_PORT'),
+        "NAME": os.environ.get('DATABASE_NAME'),
+        "USER": os.environ.get('DATABASE_USER'),
+        "PASSWORD": os.environ.get('DATABASE_PASSWORD'),
+        "HOST": os.environ.get('DATABASE_HOST'),
+        "PORT": os.environ.get('DATABASE_PORT'),
     },
 }
 
