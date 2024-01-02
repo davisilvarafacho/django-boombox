@@ -164,6 +164,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+# Caso queira utilizar o envio de e-mail, configure de acordo com os
+# os dados do seu provedor de email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = None
+
+EMAIL_PORT = None
+
+EMAIL_HOST_USER = None
+
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
+DEFAULT_FROM_EMAIL = None
+
+
 REST_FRAMEWORK = {
     "PAGE_SIZE": 12,
     "DEFAULT_PAGINATION_CLASS": "apps.system.core.pagination.CustomPagination",
@@ -190,21 +205,3 @@ SIMPLE_JWT = {
     "AUDIENCE": None,
     "ISSUER": None,
 }
-
-# ---------------------------------
-# Configurações de envio de e-mail
-# ---------------------------------
-#
-# Caso queira utilizar o envio de e-mail, configure de acordo com os
-# os dados do seu provedor de email
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-EMAIL_HOST = None
-
-EMAIL_PORT = None
-
-EMAIL_HOST_USER = None
-
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
-
-DEFAULT_FROM_EMAIL = None
