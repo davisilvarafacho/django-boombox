@@ -10,9 +10,9 @@ DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
 
 MODE = os.environ.get("DJANGO_MODE")
 
-DEV = MODE == "DEV"
+DEV = MODE == "development"
 
-PROD = MODE == "PROD"
+PROD = MODE == "production"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
