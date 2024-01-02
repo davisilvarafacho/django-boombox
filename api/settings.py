@@ -190,3 +190,21 @@ SIMPLE_JWT = {
     "AUDIENCE": None,
     "ISSUER": None,
 }
+
+# ---------------------------------
+# Configurações de envio de e-mail
+# ---------------------------------
+#
+# Caso queira utilizar o envio de e-mail, configure de acordo com os
+# os dados do seu provedor de email
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_HOST = None
+
+EMAIL_PORT = None
+
+EMAIL_HOST_USER = None
+
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
+
+DEFAULT_FROM_EMAIL = None
