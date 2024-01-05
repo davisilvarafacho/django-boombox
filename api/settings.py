@@ -205,3 +205,11 @@ SIMPLE_JWT = {
     "AUDIENCE": None,
     "ISSUER": None,
 }
+
+
+# configuração para o código próprio do projeto
+BOOMBOX = {
+    "DEFAULT_DATA_PATH": os.path.join(BASE_DIR, "apps/system/core/data/json/default/"),
+    "SEND_EMAIL_ON_LOGIN_FAIL": False,
+    "SEND_EMAIL_ON_LOGIN_SUCCESS": False,
+}
