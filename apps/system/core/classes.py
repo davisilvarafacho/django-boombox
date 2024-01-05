@@ -27,11 +27,14 @@ class DinamicAttrs:
     da inteface de `[chave]`
     """
 
-    def __init__(self, dados: dict):
+    def __init__(self, dados):
         self.raw = dados
         for chave, valor in dados.items():
             setattr(self, chave, valor)
 
+    def __setattr__(self, __name, __value) -> None:
+        setattr(self, __name, __value)
+        self.raw[__name] = __value
 
 class JSONDinamicAttrs(DinamicAttrs):
     """Adaptação da classe `DinamicAttrs` para utilizar um arquivo JSON"""
