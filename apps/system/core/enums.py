@@ -1,6 +1,3 @@
-import enums
-
-
 class SettingsKeys:
     DEFAULT_DATA_PATH = "DEFAULT_DATA_PATH"
     SEND_EMAIL_ON_LOGIN_FAIL = "SEND_EMAIL_ON_LOGIN_FAIL"
