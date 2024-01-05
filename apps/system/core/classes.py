@@ -49,11 +49,11 @@ class CachedFile:
 
     __files = {}
 
-    def __new__(cls, *args, **kwargs) -> TextIOWrapper:
-        path, mode = kwargs.get("path"), kwargs.get("mode", "r")
+    def __new__(cls, path, **kwargs) -> TextIOWrapper:
+        mode = kwargs.get("mode", "r")
         if cls.__files.get(path, None) is None:
-            instance = open(path, mode)
-            cls.__files[path] = instance
+            file = open(path, mode)
+            cls.__files[path] = file
 
         return cls.__files[path]
 
