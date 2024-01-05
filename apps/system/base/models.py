@@ -103,4 +103,5 @@ class Endereco(models.Model):
     class Meta:
         abstract = True
 
+
 estados = Endereco.ESTADOS
