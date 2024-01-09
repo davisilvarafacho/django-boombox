@@ -64,10 +64,10 @@ class CachedFile:
 class Email:
     """Classe construção e envio de email."""
 
-    def __init__(self, titulo, mensagem="", from_email=settings.EMAIL_HOST_USER):
+    def __init__(self, titulo, mensagem="", destinatarios=[], from_email=settings.EMAIL_HOST_USER):
         self._titulo = titulo
         self._mensagem = mensagem
-        self._destinatarios = []
+        self.destinatarios = destinatarios
 
         self._template = None
         self._from_email = from_email
@@ -81,21 +81,21 @@ class Email:
         return self
 
     def add_destinatario(self, destinatario):
-        if destinatario in self._destinatarios:
+        if destinatario in self.destinatarios:
             raise Exception("Destinatário já foi adicionado")
 
-        if len(self._destinatarios) == 500:
+        if len(self.destinatarios) == 500:
             raise Exception("Número máximo de destinatários atingido")
 
-        self._destinatarios.append(destinatario)
+        self.destinatarios.append(destinatario)
         return self
 
     def enviar(self):
-        if len(self._destinatarios) == 0:
+        if len(self.destinatarios) == 0:
             raise Exception("Informe ao menos um destinatário")
 
         email = EmailMultiAlternatives(
-            self._titulo, self._mensagem, self._from_email, self._destinatarios
+            self._titulo, self._mensagem, self._from_email, self.destinatarios
         )
         if self._template is not None:
             email.attach_alternative(self._template, "text/html")
