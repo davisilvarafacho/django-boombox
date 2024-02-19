@@ -32,16 +32,15 @@ DJANGO_APPS = [
 ]
 
 LIBS_APPS = [
-    # rest framework e ecosistema
     "rest_framework",
     "corsheaders",
     "django_filters",
-    # libs utilitárias
     "django_extensions",
 ]
 
-# aqui ficam os apps criados por você e sua equipe é uma preferência
+# aqui ficam os apps criados por você e sua equipe, é uma preferência
 # minha, mas você pode colocar tudo junto caso prefira.
+# 
 # OBS: essa constante é usado no arquivo api/urls.py, que registra
 # automáticamente as rotas de todos os apps listados aqui
 BOOMBOX_APPS = [
@@ -179,19 +178,24 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")
 DEFAULT_FROM_EMAIL = None
 
 
+RABBITMQ_HOST = os.environ.get('RABBITMQ_HOST')
+
+RABBITMQ_USER = os.environ.get('RABBITMQ_USER')
+
+RABBITMQ_PSSWD = os.environ.get('RABBITMQ_PSSWD')
+
+RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT')
+
+
 REST_FRAMEWORK = {
-    "PAGE_SIZE": 12,
+    "PAGE_SIZE": 25,
     "DEFAULT_PAGINATION_CLASS": "apps.system.core.pagination.CustomPagination",
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
         "rest_framework.permissions.IsAuthenticated",
     ],
-    "DATE_INPUT_FORMATS": ["%d/%m/%Y"],
-    "DATETIME_FORMAT": "%d/%m/%Y %H:%M:%S",
-    "DATE_FORMAT": "%d/%m/%Y",
 }
 
 
@@ -204,12 +208,4 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "sub",
     "AUDIENCE": None,
     "ISSUER": None,
-}
-
-
-# configuração para o código próprio do projeto
-BOOMBOX = {
-    "DEFAULT_DATA_PATH": os.path.join(BASE_DIR, "apps/system/core/data/json/default/"),
-    "SEND_EMAIL_ON_LOGIN_FAIL": False,
-    "SEND_EMAIL_ON_LOGIN_SUCCESS": False,
 }
