@@ -1,8 +1,6 @@
 import os
 import json
 
-from io import TextIOWrapper
-
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
@@ -11,7 +9,7 @@ from django.core.signing import Signer, BadSignature
 
 class SingletonMeta(type):
     """
-    Metaclass for Singleton
+    Metaclass paras Singleton
     """
 
     _instances = {}
@@ -23,8 +21,8 @@ class SingletonMeta(type):
 
 
 class DinamicAttrs:
-    """Disponibiliza um objeto para acessar atributos via `.` ao invés
-    da inteface de `[chave]`
+    """Objeto de utilidade para acessar atributos via `.` ao invés
+    da inteface de `[<chave>]`
     """
 
     def __init__(self, dados):
@@ -51,7 +49,7 @@ class CachedFile:
 
     __files = {}
 
-    def __new__(cls, path, **kwargs) -> TextIOWrapper:
+    def __new__(cls, path, **kwargs):
         mode = kwargs.get("mode", "r")
         if cls.__files.get(path, None) is None:
             file = open(path, mode)
@@ -83,7 +81,7 @@ class Email:
         if destinatario in self.destinatarios:
             raise Exception("Destinatário já foi adicionado")
 
-        if len(self.destinatarios) == 500:
+        if len(self.destinatarios) == 100:
             raise Exception("Número máximo de destinatários atingido")
 
         self.destinatarios.append(destinatario)
