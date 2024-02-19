@@ -24,7 +24,7 @@ def reload_api_settings(*args, **kwargs):
 
     setting, value = kwargs["setting"], kwargs["value"]
 
-    if setting == "SIMPLE_JWT":
+    if setting == "BOOMBOX":
         api_settings = APISettings(value, DEFAULTS, IMPORT_STRINGS)
 
 
