@@ -3,13 +3,11 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.request import Request
 from rest_framework import status
 
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 
-from apps.system.core.enums import SettingsKeys
 from apps.system.core.classes import Email
 
 from .throttles import LoginThrottle
@@ -24,18 +22,18 @@ class UsuarioViewSet(ModelViewSet):
 class CustomTokenObtainPairView(TokenObtainPairView):
     throttle_classes = [LoginThrottle]
 
-    def post(self, request: Request, *args, **kwargs) -> Response:
+    def post(self, request, *args, **kwargs) -> Response:
         serializer = self.get_serializer(data=request.data)
 
         try:
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
-            if settings.BOOMBOX[SettingsKeys.SEND_EMAIL_ON_LOGIN_FAIL]:
+            if settings.SEND_EMAIL_ON_LOGIN_FAIL:
                 self.send_email_on_fail(request.data["username"])
 
             raise InvalidToken(e.args[0])
 
-        if settings.BOOMBOX[SettingsKeys.SEND_EMAIL_ON_LOGIN_SUCCESS]:
+        if settings.SEND_EMAIL_ON_LOGIN_SUCCESS:
                 self.send_email_on_success(request.data["username"])
 
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
