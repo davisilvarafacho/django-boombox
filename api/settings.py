@@ -209,6 +209,7 @@ SIMPLE_JWT = {
     "AUDIENCE": None,
     "ISSUER": None,
 }
+
 # configurações utilizados pelo próprio código base fornecido pelo boombox
 
 DEFAULT_DATA_PATH =  os.path.join(BASE_DIR, "apps/system/core/data/json/default/")
@@ -217,3 +218,4 @@ SEND_EMAIL_ON_LOGIN_SUCCESS =  False
 
 SEND_EMAIL_ON_LOGIN_FAIL =  False
 
+ACCESS_TOKEN_USER_FIELDS = []

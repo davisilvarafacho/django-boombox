@@ -2,7 +2,6 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (
-    token_obtain_pair as token_obtain,
     token_refresh,
     token_verify,
 )
