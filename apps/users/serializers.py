@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Usuario
@@ -14,6 +16,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
 
-        # coloque aqui os dados do usuário que deseja retornar no token
+        for field in settings.ACCESS_TOKEN_USER_FIELDS:
+            token[field["key"]] = getattr(user, field["attr"])
     
         return token
