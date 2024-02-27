@@ -1,0 +1,6 @@
+services:
+  api:
+    build: .
+    hostname: api
+    container_name: api
+    entrypoint: gunicorn api.wsgi -b 0.0.0.0:8000
