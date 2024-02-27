@@ -1,5 +1,8 @@
 # django-boombox
-Uma base robusta para projetos baseados no django framework. Por padrão é configurado com o django rest framework, mas as configurações também são compatíveis com projetos django padrão.
+
+## Sobre o Projeto
+
+O Django Boombox é um projeto base para iniciar o desenvolvimento de aplicações web usando Django. Ele vem com configurações iniciais e estrutura de diretórios para facilitar o desenvolvimento e a implantação de aplicativos Django.
 
 
 ## Clonei o projeto, e agora?
