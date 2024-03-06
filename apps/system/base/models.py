@@ -29,19 +29,31 @@ class Base(models.Model):
         help_text="Se o registro está ativo ou não",
     )
 
-    data_hora_criacao = models.DateTimeField(
-        _("data e hora de criação"),
+    data_criacao = models.DateField(
+        _("data de criação"),
         auto_now_add=True,
-        help_text="Data e hora da criação do registro",
+        help_text="Data da criação do registro",
     )
 
-    data_hora_ultima_alteracao = models.DateTimeField(
-        _("data e hora da última alteração"),
+    hora_criacao = models.TimeField(
+        _("hora de criação"),
+        auto_now_add=True,
+        help_text="Hora da criação do registro",
+    )
+
+    data_ultima_alteracao = models.DateField(
+        _("data da última alteração"),
         auto_now=True,
-        help_text="Data e hora da última alteração",
+        help_text="Data da última alteração",
     )
 
-    criador = models.ForeignKey(
+    hora_ultima_alteracao = models.TimeField(
+        _("hora da última alteração"),
+        auto_now=True,
+        help_text="Hora da última alteração",
+    )
+
+    owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("criador do registro"),
         on_delete=models.PROTECT,
