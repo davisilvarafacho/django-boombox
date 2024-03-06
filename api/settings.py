@@ -163,8 +163,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 
 
-# Caso queira utilizar o envio de e-mail, configure de acordo com os
-# os dados do seu provedor de email
+# configure de acordo com os dados do seu provedor de email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = None
@@ -211,7 +210,6 @@ SIMPLE_JWT = {
 }
 
 # configurações utilizados pelo próprio código base fornecido pelo boombox
-
 DEFAULT_DATA_PATH =  os.path.join(BASE_DIR, "apps/system/core/data/json/default/")
 
 SEND_EMAIL_ON_LOGIN_SUCCESS =  False
