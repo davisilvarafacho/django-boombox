@@ -1,6 +1,19 @@
 import os
+import ast
+import warnings
+
 from pathlib import Path
 from datetime import timedelta
+
+def get_bool_from_env(name, default_value):
+    if name in os.environ:
+        value = os.environ[name]
+        try:
+            return ast.literal_eval(value)
+        except ValueError as e:
+            raise ValueError(_(f"'{value}' não é um valor válido para '{name}'")) from e
+    return default_value
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
