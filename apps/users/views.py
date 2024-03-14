@@ -68,22 +68,22 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
         except TokenError as e:
             if settings.SEND_EMAIL_ON_LOGIN_FAIL:
-                self.send_email_on_fail(request.data["username"])
+                self.send_email_on_fail(request.data["email"])
 
             raise InvalidToken(e.args[0])
 
         if settings.SEND_EMAIL_ON_LOGIN_SUCCESS:
-                self.send_email_on_success(request.data["username"])
+            self.send_email_on_success(request.data["email"])
 
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
     def send_email_on_fail(self, email_usuario: str) -> None:
-        email = Email(_("Login falhou"), _("Houve uma tentativa de login na sua conta".format(email_usuario)))
+        email = Email(_("Login falhou"), _("Houve uma tentativa de login na sua conta"))
         email.add_destinatario(email_usuario)
         email.enviar()
 
     def send_email_on_success(self, email_usuario: str) -> None:
-        email = Email(_("Login realizado"), _("O usuário {} realizou login".format(email_usuario)))
+        email = Email(_("Login realizado"), _(f"O usuário {email_usuario} realizou login"))
         email.add_destinatario(email_usuario)
         email.enviar()
 
