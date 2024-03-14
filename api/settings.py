@@ -2,6 +2,9 @@ import os
 import ast
 import warnings
 
+from django.utils.translation import gettext_lazy as _
+from django.core.management.utils import get_random_secret_key
+
 from pathlib import Path
 from datetime import timedelta
 
@@ -19,13 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-DEBUG = os.environ.get("DJANGO_DEBUG") == "True"
+DEBUG = get_bool_from_env("DJANGO_DEBUG", True)
 
-MODE = os.environ.get("DJANGO_MODE")
+MODE = os.environ.get("DJANGO_MODE", "development")
 
 DEV = MODE == "development"
 
 PROD = MODE == "production"
+
+
+if not SECRET_KEY and DEBUG:
+    warnings.warn(_("'SECRET_KEY' não foi configurada, using a random temporary key."))
+    SECRET_KEY = get_random_secret_key()
+
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
