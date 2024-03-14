@@ -1,7 +1,3 @@
-"""Módulo que
-
-"""
-
 import os
 import json
 import uuid
@@ -16,7 +12,6 @@ class ConnectionAMQP:
         porta = os.environ.get('RABBITMQ_PORT')
 
         credentials = pika.PlainCredentials(usuario, senha)
-
         self.conn = pika.BlockingConnection(pika.ConnectionParameters(host, porta, '/', credentials))
         self.channel = self.conn.channel()
 
