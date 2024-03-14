@@ -18,6 +18,9 @@ class UsuarioViewSet(ModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(is_active=False)
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     throttle_classes = [LoginThrottle]
