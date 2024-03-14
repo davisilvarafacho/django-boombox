@@ -60,11 +60,6 @@ LIBS_APPS = [
     "django_extensions",
 ]
 
-# aqui ficam os apps criados por você e sua equipe, é uma preferência
-# minha, mas você pode colocar tudo junto caso prefira.
-# 
-# OBS: essa constante é usado no arquivo api/urls.py, que registra
-# automáticamente as rotas de todos os apps listados aqui
 BOOMBOX_APPS = [
     "apps.system.base",
     "apps.system.core",
@@ -83,6 +78,7 @@ DJANGO_MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.locale.LocaleMiddleware',
 ]
 
 LIBS_MIDDLEWARE = [
@@ -123,8 +119,6 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     },
-    # Caso queira utilizar o postgres, remova a configuração de cima
-    # e renome a configuração abaixo para "default"
     "postgres": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("DATABASE_NAME"),
@@ -136,9 +130,6 @@ DATABASES = {
 }
 
 
-# py-redis e redis já vem por padrão no requirements.txt, mas caso
-# seu projeto não precise de cache, remova a configuração abaixo
-# e os pacotes no requirements.txt
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
@@ -172,12 +163,29 @@ LANGUAGE_CODE = "pt-br"
 
 TIME_ZONE = "America/Sao_Paulo"
 
-USE_I18N = True
-
 USE_TZ = True
 
 
-STATIC_URL = "static/"
+USE_I18N = True
+
+LANGUAGES = [
+    ('en', _('English')),
+    ('es', _('Spanish')),
+    ('pt-br', _('Portuguese (Brazil)')),
+]
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale'),
+]
+
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -185,7 +193,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 
 
-# configure de acordo com os dados do seu provedor de email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_HOST = None
@@ -208,6 +215,7 @@ RABBITMQ_PSSWD = os.environ.get('RABBITMQ_PSSWD')
 RABBITMQ_PORT = os.environ.get('RABBITMQ_PORT')
 
 
+# https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "PAGE_SIZE": 25,
     "DEFAULT_PAGINATION_CLASS": "apps.system.core.pagination.CustomPagination",
@@ -219,11 +227,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-
+# https://jwt.io/introduction
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=90 if DEBUG else 1),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=120 if DEBUG else 3),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=90 if MODE == "development" else 1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=120 if MODE == "development" else 3),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.CustomTokenObtainPairSerializer",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "sub",
@@ -231,7 +239,6 @@ SIMPLE_JWT = {
     "ISSUER": None,
 }
 
-# configurações utilizados pelo próprio código base fornecido pelo boombox
 DEFAULT_DATA_PATH =  os.path.join(BASE_DIR, "apps/system/core/data/json/default/")
 
 SEND_EMAIL_ON_LOGIN_SUCCESS =  False
