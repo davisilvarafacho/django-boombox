@@ -4,13 +4,6 @@ from django.contrib.auth.hashers import make_password
 from django.db import models
 
 
-"""Sobreescrita do usuário.
-
-Aqui, estamos sobrescrevendo o usuário padrão do Django, para o usuário não tenha
-mais os campos first_name, last_name e username, e sim, apenas o campo nome e email,
-removendo a dependência do username, que é um campo obrigatório no Django.
-"""
-
 class UsuarioManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
         email = self.normalize_email(email)
@@ -37,12 +30,12 @@ class UsuarioManager(UserManager):
 
 
 class Usuario(AbstractUser):
-    nome = models.CharField(_("nome"), max_length=100)
-    email = models.EmailField(_("email"), unique=True)
-
     username = None
     first_name = None
     last_name = None
+
+    nome = models.CharField(_("nome"), max_length=100)
+    email = models.EmailField(_("email"), unique=True)
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
@@ -58,3 +51,6 @@ class Usuario(AbstractUser):
         ordering = ["id"]
         verbose_name = _("Usuário")
         verbose_name_plural = _("Usuários")
+        indexes = [
+            models.Index(fields=['email'], name='email_idx'),
+        ]
