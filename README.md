@@ -13,6 +13,7 @@ O Django Boombox é um projeto base para iniciar o desenvolvimento de aplicaçõ
 5. [django-cors-headers](https://github.com/adamchainz/django-cors-headers)
 6. [django-filter](https://github.com/carltongibson/django-filter)
 7. [django-extensions](https://github.com/django-extensions/django-extensions)
+8. [pika](https://github.com/pika/pika)
 
 ### Insipirações
 
