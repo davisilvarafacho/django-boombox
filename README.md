@@ -4,6 +4,10 @@
 
 O Django Boombox é um projeto base para iniciar o desenvolvimento de aplicações web usando Django. Ele vem com configurações iniciais e estrutura de diretórios para facilitar o desenvolvimento e a implantação de aplicativos Django.
 
+## Code styling
+
+1. Utilizamos o formatador black
+
 ## Libs utilizadas
 
 1. [django-rest-framework](https://github.com/encode/django-rest-framework)
