@@ -13,8 +13,8 @@ def get_bool_from_env(name, default_value):
         value = os.environ[name]
         try:
             return ast.literal_eval(value)
-        except ValueError as e:
-            raise ValueError(_(f"'{value}' não é um valor válido para '{name}'")) from e
+        except ValueError as exc:
+            raise ValueError(f"'{value}' não é um valor válido para '{name}'") from exc
     return default_value
 
 
@@ -32,7 +32,7 @@ PROD = MODE == "production"
 
 
 if not SECRET_KEY and DEBUG:
-    warnings.warn(_("'SECRET_KEY' não foi configurada, using a random temporary key."))
+    warnings.warn("'SECRET_KEY' não foi configurada, using a random temporary key.")
     SECRET_KEY = get_random_secret_key()
 
 
@@ -228,6 +228,7 @@ REST_FRAMEWORK = {
 }
 
 # https://jwt.io/introduction
+# https://django-rest-framework-simplejwt.readthedocs.io/en/latest/
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=90 if MODE == "development" else 1),
