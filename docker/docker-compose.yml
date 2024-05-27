@@ -1,0 +1,74 @@
+networks:
+  connect:
+    driver: bridge
+
+volumes:
+  postgres-data:
+
+
+services:
+  proxy:
+    image: nginx:latest
+    container_name: proxy
+    hostname: proxy
+    networks:
+      - connect
+    ports:
+      - 8000:8000
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+      - ./staticfiles:/django_staticfiles/
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+
+  api:
+    build: .
+    container_name: api
+    hostname: api
+    entrypoint: gunicorn api.wsgi -b 0.0.0.0:8000
+    depends_on:
+      - proxy
+      - db
+      - cache
+      - broker
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+
+  db:
+    image: postgres:latest
+    hostname: postgres
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+
+  cache:
+    image: redis:7.2.4
+    container_name: cache
+    hostname: cache
+    ports:
+      - 6379:6379
+    networks:
+      - connect
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+
+  broker:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"

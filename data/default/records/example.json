@@ -1,0 +1,9 @@
+[
+    {
+        "ids_fields_map": {
+            "field": "value"
+        },
+        "model": "app.Model",
+        "": ""
+    }
+]
