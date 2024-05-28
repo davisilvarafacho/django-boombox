@@ -1,9 +1,14 @@
 [
     {
-        "ids_fields_map": {
-            "field": "value"
+        "model": "apps.users.models.Usuario",
+        "id_fields_map": {
+            "email": "admin@example.com"
         },
-        "model": "app.Model",
-        "": ""
+        "data": {
+            "nome": "Administrador",
+            "email": "admin@example.com",
+            "password": "b5EEPbdes08sGT9"
+        },
+        "active": true
     }
 ]
