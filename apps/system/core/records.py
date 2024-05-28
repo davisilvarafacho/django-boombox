@@ -34,7 +34,15 @@ class DefaultRecord:
 
     @property
     def exists(self):
+        """Sintax suggar for usage"""
+
         return self.model_instance is not None
+
+    @property
+    def inactive(self):
+        """Sintax suggar for usage"""
+
+        return not self.active
 
     def create(self):
         instance = self.model(**self.raw)
@@ -68,6 +76,22 @@ class DefaultRecordsManger:
 
             elif not record.active and record.exists:
                 record.delete()
+
+    def delete_inactives(self):
+        records = self.get_records()
+        for record in records:
+            if not record.exists or record.inactive:
+                continue
+
+            record.delete()
+
+    def populate(self):
+        records = self.get_records()
+        for record in records:
+            if record.exists or record.inactive:
+                continue
+
+            record.create()
 
     def get_records(self):
         files = self.get_files()
