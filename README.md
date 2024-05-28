@@ -118,7 +118,11 @@ O django-boombox define alguns padrões para varíaveis de ambiente:
 1. Toda e qualquer varíavel deve ficar no arquivo `.env`, no diretório raiz
 2. Toda variável tem o prefixo do escopo onde vai ser utilizada, exemplo: **DATABASE_PORT**. Neste exemplo **DATABASE** é escopo.
 
-O django-boombox também possui uma variável de ambiente personalizada, que é o `DJANGO_MODE`. Ele se refere ao "modo de execução" da api naquele momento e a partir dele surgem 2 constantes no `settings.py`: a `IN_DEVELOPMENT` e a `IN_PRODUCTION`.
+O django-boombox também possui algumas variáveis de ambiente personalizada:
+
+**DJANGO_MODE**
+
+ Ele se refere ao "modo de execução" da api naquele momento e a partir dele surgem 2 constantes no `settings.py`: a `IN_DEVELOPMENT` e a `IN_PRODUCTION`.
 
 Isso é útil porque nem sempre a constante `DEBUG` do `settings.py` nos fala tudo o que precisamos saber do atual estado da aplicação. As vezes colocamos a aplicação em produção com `DEBUG=True` para resolvermos um bug crítico. Logo, isso que certas funcionalidades que são feitas para serem executadas somente durante o desenvolvimento são garantidas 100%, além de melhorar a legibilidade do código.
 
@@ -132,7 +136,16 @@ if settings.IN_DEVELOPMENT:
     ...
 ```
 
-__OBS__: é uma boa prática não versionar o arquivo que contém as variáveis de ambiente, por isso quando for iniciar o versionamento do projeto descomente o arquivo `.env` do `.gitignore`.
+> [!TIP]
+> é uma boa prática não versionar o arquivo que contém as variáveis de ambiente, por isso quando for iniciar o versionamento do projeto descomente o arquivo `.env` do `.gitignore`.
+
+**DJANGO_EXECUTION_MODE**
+
+Essa variável serve para dizer à api se, em determinadas situações, deve lançar uma exceção ou se deve somente "printar" um warning no terminal, possuindo 2 possíveis valores:
+
+**risky** - lança as exceções
+
+**safety** - printa os warnings 
 
 
 ### Deploy
