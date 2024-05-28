@@ -3,8 +3,8 @@ import json
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
 from django.core.signing import Signer, BadSignature
+from django.template.loader import get_template
 
 
 class SingletonMeta(type):
@@ -14,9 +14,9 @@ class SingletonMeta(type):
 
     _instances = {}
 
-    def __call__(cls, *args, **kwargs):
+    def __new__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super().__call__(*args, **kwargs)
+            cls._instances[cls] = super().__new__(cls, *args, **kwargs)
         return cls._instances[cls]
 
 
@@ -94,6 +94,7 @@ class Email:
         email = EmailMultiAlternatives(
             self._titulo, self._mensagem, self._from_email, self.destinatarios
         )
+
         if self._template is not None:
             email.attach_alternative(self._template, "text/html")
 
