@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "5a814e4b-c420-43c0-a48b-5caa94c8eedf",
+		"name": "api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23811592"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"davi.s.rafacho@gmail.com\",\n    \"password\": \"dsrafacho!123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{auth_base_url}}login/",
+							"host": [
+								"{{auth_base_url}}login"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "usuários",
+			"item": [
+				{
+					"name": "criar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}usuarios/",
+							"host": [
+								"{{api_base_url}}usuarios"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI0Njc4MjUxLCJpYXQiOjE3MTY5MDIyNTEsImp0aSI6IjQxMzM0OGY3YzYzZjQxM2E5M2JhNzhjMjRkM2M1OGZjIiwic3ViIjoxfQ.yQdeo3q7wem9MmySquIzOwG7bYc9_gjRKOxymfIpNr8",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
