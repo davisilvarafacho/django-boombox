@@ -21,5 +21,5 @@ class UsuarioSerializer(serializers.ModelSerializer):
 class LoginSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
-        token = super().get_token(user)    
+        token = super().get_token(user)
         return token
