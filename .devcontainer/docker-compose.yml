@@ -39,14 +39,13 @@ services:
     hostname: redis
     restart: unless-stopped
 
-
-  # broker:
-  #   image: rabbitmq:3-management
-  #   hostname: rabbitmq
-  #   restart: unless-stopped
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: rabbitmq
-  #     RABBITMQ_DEFAULT_PASS: rabbitmq
+  broker:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
 
 
 volumes:
