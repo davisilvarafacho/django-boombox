@@ -31,6 +31,8 @@ IN_DEVELOPMENT = MODE == "development"
 
 IN_PRODUCTION = MODE == "production"
 
+EXECUTION = os.environ.get("DJANGO_EXECUTION_MODE")
+
 
 if not SECRET_KEY and DEBUG:
     warnings.warn("'SECRET_KEY' não foi configurada, using a random temporary key.")
@@ -213,9 +215,6 @@ RABBITMQ_USER = os.environ.get("RABBITMQ_USER")
 RABBITMQ_PSSWD = os.environ.get("RABBITMQ_PSSWD")
 
 RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT")
-
-
-DJANGO_EXECUTION_MODE = os.environ.get("DJANGO_EXECUTION_MODE")
 
 
 CORS_ALLOW_ALL_ORIGINS = True
