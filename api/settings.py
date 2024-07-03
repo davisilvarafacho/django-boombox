@@ -15,7 +15,8 @@ def get_bool_from_env(name, default_value):
         try:
             return ast.literal_eval(value)
         except ValueError as exc:
-            raise ValueError(f"'{value}' não é um valor válido para '{name}'") from exc
+            raise ValueError(
+                f"'{value}' não é um valor válido para '{name}'") from exc
     return default_value
 
 
@@ -35,7 +36,8 @@ EXECUTION = os.environ.get("DJANGO_EXECUTION_MODE")
 
 
 if not SECRET_KEY and DEBUG:
-    warnings.warn("'SECRET_KEY' não foi configurada, using a random temporary key.")
+    warnings.warn(
+        "'SECRET_KEY' não foi configurada, using a random temporary key.")
     SECRET_KEY = get_random_secret_key()
 
 
@@ -230,9 +232,13 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=90 if MODE == "development" else 1),
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=120 if MODE == "development" else 3),
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 1),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 3),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.LoginSerializer",
+    "AUTH_TOKEN_CLASSES": (
+        "rest_framework_simplejwt.tokens.AccessToken",
+        "apps.users.tokens.UnconfirmedUserToken",
+    ),
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "sub",
     "AUDIENCE": None,
