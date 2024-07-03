@@ -16,6 +16,12 @@ class UsuarioViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(is_active=False)
+        self.enviar_email_confirmacao(serializer.instance.email)
+    
+    def enviar_email_confirmacao(self, email):
+        email = Email(_("Confirme seu email"), corpo="Clique no link abaixo para confirmar sua conta", destinatarios=[email])
+        email.send()
+
     @action(methods=['get'], detail=False)
     def verificar_cadastro_email(self, request, pk):
         email_usuario = pk  # estou passando o email do usuário no lugar da pk
@@ -45,17 +51,5 @@ class UsuarioViewSet(ModelViewSet):
                 "mensagem": _("Esse usuário já está ativo")
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        email = Email(_("Confirme seu email"), mensagem="Termine a confirmação do seu email", destinatarios=[instance.email])
-        email.enviar()
-        return Response()
-
-    @action(methods=['get'], detail=True)
-    def verificar_cadastro_email(self, request, pk):
-        instance = self.get_object()
-        if instance.is_active:
-            return Response({
-                "mensagem": _("Esse usuário já foi confirmado no sistema")
-            }, status=status.HTTP_400_BAD_REQUEST)
-        instance.is_active = True
-        instance.save()
+        self.enviar_email_confirmacao(instance.email)
         return Response()
