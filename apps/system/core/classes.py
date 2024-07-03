@@ -59,46 +59,53 @@ class CachedFile:
 
 
 class Email:
-    """Classe construção e envio de email."""
+    MAX_RECIPIENTS = 200
 
-    def __init__(self, titulo, mensagem="", destinatarios=[], from_email=settings.EMAIL_HOST_USER):
-        self._titulo = titulo
-        self._mensagem = mensagem
-        self.destinatarios = destinatarios
+    class InvalidRecipientsNumber(Exception):
+        pass
 
-        self._template = None
+    def __init__(self, titulo, corpo=None, destinatarios=[], from_email=settings.EMAIL_HOST_USER):
+        self.titulo = titulo
+        self.corpo = corpo
+
+        self._destinatarios = destinatarios
         self._from_email = from_email
 
-    def add_template(self, path, **context):
-        if self._template is not None:
-            raise Exception("Um template já foi adicionado")
+        self._template_path = None
+        self._template = None
 
-        self._template = get_template(path)
-        self._template.render(context)
-        return self
+    def set_template(self, path, **context):
+        self._template = get_template(path).render(context)
 
     def add_destinatario(self, destinatario):
-        if destinatario in self.destinatarios:
-            raise Exception("Destinatário já foi adicionado")
+        if destinatario in self._destinatarios:
+            return
 
-        if len(self.destinatarios) == 100:
-            raise Exception("Número máximo de destinatários atingido")
+        if len(self._destinatarios) == self.MAX_RECIPIENTS:
+            raise self.InvalidNumberRecipients(
+                "O número máximo de destinatários é 200")
 
-        self.destinatarios.append(destinatario)
-        return self
+        self._destinatarios.append(destinatario)
 
-    def enviar(self):
-        if len(self.destinatarios) == 0:
-            raise Exception("Informe ao menos um destinatário")
+    def send(self):
+        if len(self._destinatarios) == 0:
+            raise self.InvalidNumberRecipients("Informe ao menos um destinatário")
+
+        assert self.corpo is None or self._template_path is None, (
+            "Os argumentos 'corpo' ou 'template' deve ser configurados"
+        )
 
         email = EmailMultiAlternatives(
-            self._titulo, self._mensagem, self._from_email, self.destinatarios
+            subject=self.titulo,
+            body=self.corpo or "",
+            from_email=self._from_email,
+            to=self._destinatarios,
         )
 
         if self._template is not None:
             email.attach_alternative(self._template, "text/html")
 
-        email.send(fail_silently=False)
+        email.send()
 
 
 class Encryptor(metaclass=SingletonMeta):
