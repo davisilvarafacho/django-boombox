@@ -16,6 +16,14 @@ class UsuarioViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(is_active=False)
+    @action(methods=['get'], detail=False)
+    def verificar_cadastro_email(self, request, pk):
+        email_usuario = pk  # estou passando o email do usuário no lugar da pk
+        try:
+            Usuario.objects.get(email=email_usuario)
+            return Response()
+        except Usuario.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     @action(methods=['post'], detail=True)
     def confirmar_email(self, request, pk):
