@@ -235,10 +235,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 1),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 3),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.LoginSerializer",
-    "AUTH_TOKEN_CLASSES": (
-        "rest_framework_simplejwt.tokens.AccessToken",
-        "apps.users.tokens.UnconfirmedUserToken",
-    ),
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "sub",
     "AUDIENCE": None,
