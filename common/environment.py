@@ -1,5 +1,4 @@
 import os
-import enum
 
 from typing import Literal
 
@@ -43,7 +42,7 @@ EnviromentVar = Literal[
 ]
 
 
-class EnviromentVars(enum.Enum):
+class EnviromentVars:
     DJANGO_SECRET_KEY = "DJANGO_SECRET_KEY"
     DJANGO_DEBUG = "DJANGO_DEBUG"
     DJANGO_MODE = "DJANGO_MODE"
