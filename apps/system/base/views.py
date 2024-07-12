@@ -1,4 +1,3 @@
-from django.db.models.query import QuerySet
 from django.db.models import ProtectedError
 
 from rest_framework.viewsets import ModelViewSet
@@ -8,6 +7,12 @@ from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_409_CONFLICT
 
 class BaseViewSet(ModelViewSet):
     serializer_classes = {}
+    filterset_fields = {}
+    search_fields = []
+
+    def initial(self, request, *args, **kwargs):
+        super().initial(request, *args, **kwargs)
+        self.token = request.headers.get("Authorization").split(" ")[1]
     
     def get_serializer_class(self):
         assert self.serializer_classes != {} and self.serializer_class is not None, (
