@@ -8,10 +8,10 @@ from .models import Usuario
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
     ordering = ("email",)
-    search_fields = ("nome", "email")
-    list_display = ("email", "nome", "is_staff")
+    search_fields = ("first_name", "last_name", "email")
+    list_display = ("email", "first_name", "last_name", "is_staff")
     fieldsets = (
-        (_("Personal info"), {"fields": ("nome", "email")}),
+        (_("Personal info"), {"fields": ("first_name", "last_name", "email")}),
         (
             _("Permissions"),
             {
@@ -31,7 +31,7 @@ class UsuarioAdmin(UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "nome", "password1", "password2"),
+                "fields": ("email", "first_name", "last_name", "password1", "password2"),
             },
         ),
     )

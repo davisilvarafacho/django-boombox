@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.utils.translation import gettext_lazy as _
@@ -31,15 +32,19 @@ class UsuarioManager(UserManager):
 
 class Usuario(AbstractUser):
     username = None
-    first_name = None
-    last_name = None
 
-    nome = models.CharField(_("nome"), max_length=100)
+    first_name = models.CharField(_("nome"), max_length=30)
+    last_name = models.CharField(_("sobrenome"), max_length=60)
     email = models.EmailField(_("email"), unique=True)
+    cellphone = models.CharField(
+        _("celular"),
+        validators=(MinLengthValidator(11),),
+        null=True
+    )
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["nome"]
+    REQUIRED_FIELDS = ["nome", "sobrenome", "cellphone"]
 
     objects = UsuarioManager()
 
