@@ -38,14 +38,29 @@ EXECUTION = get_environ_var("DJANGO_EXECUTION_MODE")
 
 
 if not SECRET_KEY and DEBUG:
-    warnings.warn(
-        "'SECRET_KEY' não foi configurada, using a random temporary key.")
+    warnings.warn("'SECRET_KEY' não foi configurada, using a random temporary key.")
     SECRET_KEY = get_random_secret_key()
 
 
 ALLOWED_HOSTS = [
+    # dev
     "127.0.0.1",
     "localhost",
+    # prod
+]
+
+ALLOWED_ORIGINS = [
+    # dev
+    "http://127.0.0.1",
+    "http://localhost",
+    # prod
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    # dev
+    "http://127.0.0.1",
+    "http://localhost",
+    # prod
 ]
 
 CSRF_TRUSTED_ORIGINS = []
