@@ -44,6 +44,8 @@ services:
     image: postgres:latest
     hostname: postgres
     restart: unless-stopped
+    networks:
+      - connect
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
