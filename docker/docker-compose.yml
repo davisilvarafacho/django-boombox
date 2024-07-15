@@ -14,7 +14,7 @@ services:
     networks:
       - connect
     ports:
-      - 8000:8000
+      - 8000:80
     volumes:
       - ./nginx/:/etc/nginx/conf.d/
       - ./staticfiles:/django_staticfiles/
