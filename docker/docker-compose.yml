@@ -28,6 +28,8 @@ services:
     container_name: api
     hostname: api
     entrypoint: gunicorn api.wsgi -b 0.0.0.0:8000
+    networks:
+      - connect
     depends_on:
       - proxy
       - db
