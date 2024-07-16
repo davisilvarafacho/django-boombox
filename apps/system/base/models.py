@@ -2,8 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
-# TODO colocar um warning que me fale quando eu não usei o self.get_queryset
-
 
 class Base(models.Model):
     """
@@ -16,57 +14,58 @@ class Base(models.Model):
         ("N", "Não"),
     )
 
+    class opcoes_sim_nao:
+        SIM = "Sim"
+        NAO = "Não"
+
     ZERO_UM = (
         ("0", "0"),
         ("1", "1"),
     )
+
+    class opcoes_zero_um:
+        ZERO = "0"
+        UM = "1"
 
     ativo = models.CharField(
         _("ativo"),
         max_length=1,
         choices=SIM_NAO,
         default="S",
-        help_text="Se o registro está ativo ou não",
     )
 
     data_criacao = models.DateField(
         _("data de criação"),
         auto_now_add=True,
-        help_text="Data da criação do registro",
     )
 
     hora_criacao = models.TimeField(
         _("hora de criação"),
         auto_now_add=True,
-        help_text="Hora da criação do registro",
     )
 
     data_ultima_alteracao = models.DateField(
         _("data da última alteração"),
         auto_now=True,
-        help_text="Data da última alteração",
     )
 
     hora_ultima_alteracao = models.TimeField(
         _("hora da última alteração"),
         auto_now=True,
-        help_text="Hora da última alteração",
     )
 
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_("criador do registro"),
         on_delete=models.PROTECT,
-        help_text="Usuário que criou o registro",
-        related_name="%(app_label)s_%(class)s_criador",
     )
 
     class Meta:
         abstract = True
 
 
-zero_um = Base.ZERO_UM
-sim_nao = Base.SIM_NAO
+opcoes_zero_um = Base.opcoes_zero_um
+opcoes_sim_nao = Base.opcoes_sim_nao
 
 
 class Endereco(models.Model):
@@ -101,16 +100,14 @@ class Endereco(models.Model):
         ("EX", "Exterior"),
     )
 
-    pais = models.CharField(_("País"), max_length=20, blank=True, default="Brasil")
-    cep = models.CharField(_("Cep"), max_length=8)
-    estado = models.CharField(_("Estado"), choices=ESTADOS, max_length=2)
-    cidade = models.CharField(_("Cidade"), max_length=150)
-    bairro = models.CharField(_("Bairro"), max_length=150)
-    rua = models.CharField(_("Rua"), max_length=150)
-    numero = models.CharField(_("Número"), max_length=8)
-    complemento = models.CharField(
-        _("Complemento"), max_length=100, blank=True, default=""
-    )
+    pais = models.CharField(_("país"), max_length=20, blank=True, default="Brasil")
+    cep = models.CharField(_("cep"), max_length=8)
+    estado = models.CharField(_("estado"), choices=ESTADOS, max_length=2)
+    cidade = models.CharField(_("cidade"), max_length=150)
+    bairro = models.CharField(_("bairro"), max_length=150)
+    rua = models.CharField(_("rua"), max_length=150)
+    numero = models.CharField(_("número"), max_length=8)
+    complemento = models.CharField(_("complemento"), max_length=100, blank=True, default="")
 
     class Meta:
         abstract = True
