@@ -44,7 +44,7 @@ class Usuario(AbstractUser):
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["nome", "sobrenome", "cellphone"]
+    REQUIRED_FIELDS = ["first_name", "last_name", "cellphone"]
 
     objects = UsuarioManager()
 
