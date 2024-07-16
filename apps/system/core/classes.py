@@ -4,7 +4,10 @@ import json
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.core.signing import Signer, BadSignature
+from django.db import connection
 from django.template.loader import get_template
+
+from common.environment import get_environ_var, environ_keys
 
 
 class SingletonMeta(type):
@@ -121,3 +124,41 @@ class Encryptor(metaclass=SingletonMeta):
             return self._signer.unsign(value)
         except BadSignature:
             return None
+
+
+class DatabasesLoader:
+    def __init__(self):
+        self.bancos_dados = []
+
+    def get_nomes_bancos_dados(self):
+        self.cursor = connection.cursor()
+        self.cursor.execute("SELECT datname FROM pg_database;")
+        nomes = self.cursor.fetchall()
+        self.bancos_dados = [nome[0] for nome in nomes]
+        return self.bancos_dados
+
+    def carregar_banco_dados(self):
+        for db in self.bancos_dados:
+            conf_db = {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": db,
+                "USER": get_environ_var(environ_keys.DATABASE_USER),
+                "PASSWORD": get_environ_var(environ_keys.DATABASE_PASSWORD),
+                "HOST": get_environ_var(environ_keys.DATABASE_HOST),
+                "PORT": get_environ_var(environ_keys.DATABASE_PORT),
+                "ATOMIC_REQUESTS": False,
+                "AUTOCOMMIT": True,
+                "CONN_MAX_AGE": 0,
+                "CONN_HEALTH_CHECKS": False,
+                "OPTIONS": {},
+                "TIME_ZONE": None,
+                "TEST": {
+                    "CHARSET": None,
+                    "COLLATION": None,
+                    "MIGRATE": True,
+                    "MIRROR": None,
+                    "NAME": None,
+                },
+            }
+
+            settings.DATABASES[db] = conf_db
