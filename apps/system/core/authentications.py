@@ -24,4 +24,3 @@ class CustomJWTAuthentication(JWTAuthentication):
         if token is None:
             token = request.query_params.get("jwt", None)
         return token
-    
