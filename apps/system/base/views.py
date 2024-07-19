@@ -1,8 +1,8 @@
 from django.db.models import ProtectedError
 
+from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.status import HTTP_204_NO_CONTENT, HTTP_409_CONFLICT
 
 
 class BaseViewSet(ModelViewSet):
@@ -31,7 +31,8 @@ class BaseViewSet(ModelViewSet):
         try:
             instance = self.get_object()
             self.perform_destroy(instance)
-            return Response(status=HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
         except ProtectedError as ex:
-            return Response({'error': ex.args[0]}, status=HTTP_409_CONFLICT)
+            return Response({'error': ex.args[0]}, status=status.HTTP_409_CONFLICT)
+
