@@ -17,7 +17,7 @@ O real motivo da escolha dessas tecnologias é: são as que eu domino, mas aqui 
 - muita liberdade e facilidade para criar objetos extremamente personalizados
 - as bibliotecas padrão do python por si só já resolvem diversos problemas na criação de uma api, tais como: logging, warings, serialização de json, entre outros
 - se bem configurado, python consegue excelentes métricas de performance, podendo ser ainda melhor, caso você configure o ambiente de produção com [pypy](https://www.pypy.org/)
-- grande comunidade no stackoverflow
+- gigantesca comunidade
 
 
 ### django
@@ -25,7 +25,7 @@ O real motivo da escolha dessas tecnologias é: são as que eu domino, mas aqui 
 - extremamente prático
 - performático
 - extrema fácilidade de personalização do que for melhor para o seu projeto
-- grandes empresas utilizam o django, como por exemplo o instagram, bitbucket e o youtube, mostrando o nível de confiabilidade do framework
+- grandes empresas utilizam o django, como por exemplo o instagram, pinterest e o youtube, mostrando o nível de confiabilidade do framework
 
 
 ## Como utilizar esse projeto
@@ -89,7 +89,7 @@ Alguns podem não gostar da escolha por conta do que eu gosto de chamar de "lend
 
 > Performance nunca é um problema, até ser.
 
-Em outras palavras, a velocidade de execução do seu projeto só vai ser um problema no dia em que ela faltar, a menos que seu projeto seja extremamente focado ou dependente da performance em si. Nesse caso eu não recomendaria a utilização do python ou django para o desenvolvimento, mas sim escreve-la em [GO](https://go.dev/) com algum framework popular da linguagem.
+Em outras palavras, a velocidade de execução do seu projeto só vai ser um problema no dia em que ela faltar, a menos que seu projeto seja extremamente focado ou dependente da performance em si. Nesse caso, eu não recomendaria a utilização do python ou django para o desenvolvimento, mas sim escreve-la em [GO](https://go.dev/) com algum framework popular da linguagem.
 
 Voltando para a questão inicial, bancos de dados são naturalmente extremamente rápidos e performáticos. Pode até ser que você visto um vídeo de um indiano falando do quanto MySQL é mais veloz em comparação ao postgres ou talvez tenha lido em 2 ou mais sites que, segundos dados dos benchmarks deles, o MySQL é 40% ou 50% mais rápido, mas na prática, estamos falando de 4ms ou 7ms a mais ou a menos na maioria das querys que a sua aplicação vai realizar, o que não representa um ganho significativo em comparação as features que o postgres fornece.
 
@@ -137,11 +137,11 @@ if settings.IN_DEVELOPMENT:
 ```
 
 > [!TIP]
-> é uma boa prática não versionar o arquivo que contém as variáveis de ambiente, por isso quando for iniciar o versionamento do projeto descomente o arquivo `.env` do `.gitignore`.
+> É uma boa prática não versionar o arquivo que contém as variáveis de ambiente, por isso quando for iniciar o versionamento do projeto descomente o arquivo `.env` do `.gitignore`.
 
 **DJANGO_EXECUTION_MODE**
 
-Essa variável serve para dizer à api se, em determinadas situações, deve lançar uma exceção ou se deve somente "printar" um warning no terminal, possuindo 2 possíveis valores:
+Essa variável serve para dizer à api se, em determinadas situações, deve lançar uma exceção ou se deve somente printar um warning no terminal, possuindo 2 possíveis valores:
 
 **risky** - lança as exceções
 
@@ -182,7 +182,7 @@ Para mais detalhes e informações sobre como configurar o django para produçã
 
 Antes de tudo é necessário ter o docker instalado em sua máquina, seja ela [linux](https://docs.docker.com/desktop/install/linux-install/) ou [windows](https://docs.docker.com/desktop/install/windows-install/).
 
-Após instalado o docker, mova todos os arquivos da pasta docker(excerto o README.md) para o diretório raiz.
+Após instalado o docker, mova todos os arquivos da pasta docker para o diretório raiz.
 
 Logo em seguida, execute o comando abaixo para iniciar a aplicação.
 ```docker
