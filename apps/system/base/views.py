@@ -1,6 +1,7 @@
 from django.db.models import ProtectedError
 
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 
@@ -10,22 +11,18 @@ class BaseViewSet(ModelViewSet):
     filterset_fields = {}
     search_fields = []
 
-    def initial(self, request, *args, **kwargs):
-        super().initial(request, *args, **kwargs)
-        self.token = request.headers.get("Authorization").split(" ")[1]
-    
     def get_serializer_class(self):
-        assert self.serializer_classes != {} and self.serializer_class is not None, (
-            "'%s' should either include a `serializer_class` attribute, "
-            "or, fill the `serializer_classes` attribute with serializers "
-            "for the default actions or override the `get_serializer_class()` "
-            "method." % self.__class__.__name__
+        assert self.serializer_classes != {} or self.serializer_class is not None, (
+            "'%s' deve implementar o 'serializer_class' ou  'serializer_classes'." % self.__class__.__name__
         )
 
         if self.serializer_class:
             return self.serializer_class
+        
+        if action is None:
+            action = self.action
 
-        return self.serializer_classes[self.action]
+        return self.serializer_classes[action]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -36,3 +33,18 @@ class BaseViewSet(ModelViewSet):
         except ProtectedError as ex:
             return Response({'error': ex.args[0]}, status=status.HTTP_409_CONFLICT)
 
+    @action(methods=["get"], detail=True)
+    def clonar(self, request):
+        instance = self.get_object()
+        instance.pk = None
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(methods=["post"], detail=False)
+    def bulk_create(self, request):
+        serializer = self.get_serializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
