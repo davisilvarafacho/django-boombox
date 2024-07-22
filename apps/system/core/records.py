@@ -1,7 +1,11 @@
+import logging
 import json
 import os
 
+from django.db import transaction
 from django.utils.module_loading import import_string
+
+logger = logging.getLogger(__name__)
 
 
 class DefaultRecord:
@@ -44,9 +48,10 @@ class DefaultRecord:
 
         return not self.active
 
-    def create(self):
+    def create(self, **save_kwargs):
         instance = self.model(**self.raw)
-        instance.save()
+        instance.save(**save_kwargs)
+        self._model_instance = instance
         return instance
 
     def delete(self):
@@ -57,7 +62,9 @@ class DefaultRecord:
         instance.delete()
 
     def __str__(self):
-        ids = " ".join([f"{chave}='{valor}'" for chave, valor in self.identifiers.items()])
+        ids = " ".join(
+            [f"{chave}='{valor}'" for chave, valor in self.identifiers.items()]
+        )
         return f"<DefaultRecord model={self.model.__name__} {ids}>"
 
 
@@ -68,14 +75,52 @@ class DefaultRecordsManger:
 
     default_records_path = "data/default/records/"
 
-    def apply_records_changes(self):
-        records = self.get_records()
-        for record in records:
-            if record.active and not record.exists:
-                record.create()
+    def __init__(self):
+        self.__cached_models = {}
 
-            elif not record.active and record.exists:
-                record.delete()
+    def apply_updates(self):
+        records = self.get_records()
+        with transaction.atomic():
+            ponto_restauracao = transaction.savepoint()
+            try:
+                for record in records:
+                    if record.active and not record.exists:
+                        record.create()
+
+                    elif not record.active and record.exists:
+                        record.delete()
+            except Exception:
+                logger.error("[!] erro ao criar registro do sistema!")
+                transaction.savepoint_rollback(ponto_restauracao)
+
+    def get_records(self):
+        files = self.get_files()
+        records = []
+        for file in files:
+            records_to_insert = json.load(file)
+            for dataset in records_to_insert:
+                model = self.get_model(dataset["model"])
+                data = dataset["data"]
+                id_fields_map = dataset["id_fields_map"]
+                active = dataset["active"]
+
+                default_record = DefaultRecord(
+                    model=model,
+                    id_fields=id_fields_map,
+                    active=active,
+                    raw_data=data,
+                )
+
+                records.append(default_record)
+        return tuple(records)
+
+    def get_files(self):
+        files = []
+        for file_name in os.listdir(self.default_records_path):
+            path = self.default_records_path + file_name
+            file = open(path)
+            files.append(file)
+        return tuple(files)
 
     def delete_inactives(self):
         records = self.get_records()
@@ -93,31 +138,7 @@ class DefaultRecordsManger:
 
             record.create()
 
-    def get_records(self):
-        files = self.get_files()
-        records = []
-        for file in files:
-            records_to_insert = json.load(file)
-            for dataset in records_to_insert:
-                model = dataset["model"]
-                data = dataset["data"]
-                id_fields_map = dataset["id_fields_map"]
-                active = dataset["active"]
-
-                default_record = DefaultRecord(
-                    model=model,
-                    id_fields=id_fields_map,
-                    active=active,
-                    raw_data=data,
-                )
-
-            records.append(default_record)
-        return tuple(records)
-
-    def get_files(self):
-        files = []
-        for file_name in os.listdir(self.default_records_path):
-            path = self.default_records_path + file_name
-            file = open(path)
-            files.append(file)
-        return tuple(files)
+    def get_model(self, path):
+        if path not in self.__cached_models:
+            self.__cached_models[path] = import_string(path)
+        return self.__cached_models[path]
