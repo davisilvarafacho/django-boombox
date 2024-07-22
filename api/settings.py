@@ -256,3 +256,8 @@ SIMPLE_JWT = {
     "AUDIENCE": None,
     "ISSUER": None,
 }
+
+
+CACHALOT_QUERY_KEYGEN = "apps.system.core.cache.gen_query_cache_key"
+
+CACHALOT_TABLE_KEYGEN = "apps.system.core.cache.gen_query_table_key"
