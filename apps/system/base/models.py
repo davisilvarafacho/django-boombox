@@ -1,4 +1,7 @@
+import json
+
 from django.db import models
+from django.forms.models import model_to_dict
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -59,6 +62,11 @@ class Base(models.Model):
         verbose_name=_("criador do registro"),
         on_delete=models.PROTECT,
     )
+    @property
+    def json(self):
+        data = model_to_dict(self)
+        return json.dumps(data, default=str)
+
 
     class Meta:
         abstract = True
