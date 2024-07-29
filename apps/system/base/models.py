@@ -62,6 +62,11 @@ class Base(models.Model):
         verbose_name=_("criador do registro"),
         on_delete=models.PROTECT,
     )
+
+    @property
+    def codigo(self):
+        return self.pk
+
     @property
     def json(self):
         data = model_to_dict(self)
