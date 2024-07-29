@@ -7,6 +7,12 @@ from rest_framework_simplejwt.authentication import JWTAuthentication, Token, Au
 
 class CustomJWTAuthentication(JWTAuthentication):
     def authenticate(self, request: Request) -> Optional[Tuple[AuthUser, Token]]:
+        token = request.query_params.get("jwt", None)
+        if token:
+            validated_token = self.get_validated_token(token)
+
+            return self.get_user(validated_token), validated_token
+
         header = self.get_header(request)
         if header is None:
             return None
@@ -18,9 +24,3 @@ class CustomJWTAuthentication(JWTAuthentication):
         validated_token = self.get_validated_token(raw_token)
 
         return self.get_user(validated_token), validated_token
-
-    def get_raw_token(self, header: bytes, request: Request) -> bytes | None:
-        token = super().get_raw_token(header)
-        if token is None:
-            token = request.query_params.get("jwt", None)
-        return token
