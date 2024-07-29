@@ -64,6 +64,8 @@ apps/*/migrations/*
 apps/system/*/migrations/*
 !apps/*/migrations/__init__.py
 !apps/system*/migrations/__init__.py
+mediafiles/
+staticfiles/
 
 # Flask stuff:
 instance/
