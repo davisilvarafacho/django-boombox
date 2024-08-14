@@ -236,8 +236,13 @@ CORS_ALLOW_ALL_ORIGINS = True
 REST_FRAMEWORK = {
     "PAGE_SIZE": 30,
     "DEFAULT_PAGINATION_CLASS": "apps.system.core.pagination.CustomPagination",
-    "DEFAULT_AUTHENTICATION_CLASSES": ("apps.system.core.authentications.CustomJWTAuthentication",),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "apps.system.core.authentications.JwtHeaderTenantAuthentication",
+        "apps.system.core.authentications.JwtQueryParamTenantAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework.filters.OrderingFilter",
         "rest_framework.filters.SearchFilter",
