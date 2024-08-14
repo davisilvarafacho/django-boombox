@@ -8,7 +8,7 @@ from django.core.management.utils import get_random_secret_key
 
 from pathlib import Path
 
-from common.environment import get_environ_var,  environ_keys
+from utils.environment import get_environ_var, environ_keys
 
 
 def get_bool_from_env(name, default_value):
@@ -17,8 +17,7 @@ def get_bool_from_env(name, default_value):
         try:
             return ast.literal_eval(value)
         except ValueError as exc:
-            raise ValueError(
-                f"'{value}' não é um valor válido para '{name}'") from exc
+            raise ValueError(f"'{value}' não é um valor válido para '{name}'") from exc
     return default_value
 
 

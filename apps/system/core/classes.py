@@ -7,7 +7,7 @@ from django.core.signing import Signer, BadSignature
 from django.db import connection
 from django.template.loader import get_template
 
-from common.environment import get_environ_var, environ_keys
+from utils.environment import get_environ_var, environ_keys
 
 
 class SingletonMeta(type):
