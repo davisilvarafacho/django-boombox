@@ -4,6 +4,8 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.utils.translation import gettext_lazy as _
 
+from auditlog.registry import auditlog
+
 
 class UsuarioManager(UserManager):
     def _create_user(self, email, password, **extra_fields):
@@ -59,3 +61,6 @@ class Usuario(AbstractUser):
         indexes = [
             models.Index(fields=['email'], name='email_idx'),
         ]
+
+
+auditlog.register(Usuario)
