@@ -223,6 +223,8 @@ DEFAULT_FROM_EMAIL = None
 
 AUTH_QUERY_PARAM_NAME = "jwt"
 
+MULTITENANCY_DATABASE_PREFIX = "boombox"
+
 
 RABBITMQ_HOST = get_environ_var(environ_keys.RABBITMQ_HOST)
 
