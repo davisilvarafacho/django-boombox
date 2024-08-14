@@ -4,7 +4,7 @@ from .models import Configuracao
 
 @admin.register(Configuracao)
 class ConfiguracaoAdmin(admin.ModelAdmin):
-    list_display = ('ativo', 'codigo', 'descricao', 'valor')
-    list_filter = ('ativo', 'codigo', 'descricao')
-    search_fields = ('codigo',)
-    ordering = ('codigo',)
+    list_display = ('ativo', 'cf_codigo', 'cf_descricao', 'cf_valor')
+    list_filter = ('ativo', 'cf_codigo', 'cf_descricao')
+    search_fields = ('cf_codigo',)
+    ordering = ('cf_codigo',)
