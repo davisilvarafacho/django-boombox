@@ -221,6 +221,9 @@ EMAIL_HOST_PASSWORD = get_environ_var(environ_keys.EMAIL_PASSWORD)
 DEFAULT_FROM_EMAIL = None
 
 
+AUTH_QUERY_PARAM_NAME = "jwt"
+
+
 RABBITMQ_HOST = get_environ_var(environ_keys.RABBITMQ_HOST)
 
 RABBITMQ_USER = get_environ_var(environ_keys.RABBITMQ_USER)
@@ -252,7 +255,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 1),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 3),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.LoginSerializer",
