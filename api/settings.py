@@ -72,6 +72,7 @@ LIBS_APPS = [
     "corsheaders",
     "cachalot",
     "django_filters",
+    "auditlog",
     "django_extensions",
 ]
 
