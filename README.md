@@ -42,7 +42,7 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 
 1. autenticação
 2. banco de dados
-3. multitenancia(__em desenvolvimento__)
+3. multi-tenancy
 4. cache
 5. testes(__em desenvolvimento__)
 6. documentação(__em desenvolvimento__)
@@ -56,7 +56,7 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 14. linting e formatação(__em desenvolvimento__)
 
 
-### Autenticação
+<!-- ### Autenticação
 
 A autenticação é feita com a biblioteca [knox](https://github.com/jazzband/django-rest-knox) o qual é desenvovlido e mantido pela [jazzband](https://github.com/jazzband), uma grande comunidade, já consolidada no mundo open-source, focada em projetos python.
 
@@ -76,7 +76,7 @@ Aqui estão as principais funcionalidades do knox:
 As urls do knox são importadas no arquivo [api/urls.py](https://github.com/davisilvarafacho/django-boombox/blob/a6fd9741b984d0006b9c64c864c6011124da3484/api/urls.py).
 
 
-Para mais informações acesse a [documentação](https://jazzband.github.io/django-rest-knox/)
+Para mais informações acesse a [documentação](https://jazzband.github.io/django-rest-knox/) -->
 
 
 ### Banco de dados
@@ -97,14 +97,22 @@ Além disso, como se tudo o que já foi dito não bastasse, o postgres tem a fam
 
 **Conclusão:** não compensa trocar toda todo o universo de funcionalidades e extensões do posgres e a sua robustez por um ganho de 4ms a 7ms. E mais, tais funcionalidades resolvem, diversas vezes, problemas complexos de maneira simples e fácil, desde que você conheça o postgres o suficiente para isso, fora que, caso sua aplicação precise de alguma dessas funcionalidades, você terá de desenvolve-las por contra própria, ou procurar alguma biblioteca externa.
 
+### Multi-Tenancy
+
+Devido o django-boombox ser uma aplicação pensada para um SaaS, ele possui um esquema nativo para multi-tenancy, em cada requisição é setado o tenant no qual os dados serão acessados. 
+
+Isso é feito em [apps/system/core/authentications.py](https://github.com/davisilvarafacho/django-boombox/blob/70667cae72ebb191c8101966b2ed4042e1ad7310/apps/system/core/authentications.py)
 
 ### Cache
 
 O framework de cache escolhido foi o [django-cachalot](https://github.com/noripyt/django-cachalot) devido a sua abordagem, facilidade de configuração e quantidade de testes que possui.
 
+Devido o django-boombox ter uma multitênancia física - cada tenant tem seu banco de dados, o "cacheamento" é feito também, dessa forma, separando cada informação pelo seu tenant.
+
 > [!IMPORTANT]
 > O tipo de abordagem de cache ideal varia de aplicação para aplicação, no caso do django-cachalot ele guarda os dados retornados de uma query quando ela é executada, guardando toda a tabela no cache, pouco a pouco, mas caso você esteja desenvolvendo uma rede social ou algo uma aplicação que tenha um alto volume de escrita no banco, o django-cachalot não seria a ferramenta ideal.
 > Para entender melhor, acesse a [documentação do projeto](https://django-cachalot.readthedocs.io/en/latest/introduction.html#comparison-with-similar-tools)
+
 
 
 
