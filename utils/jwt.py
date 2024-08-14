@@ -19,7 +19,7 @@ DEFAULT_JWT_PAYLOAD_CONTENT = {
 }
 
 
-def get_payload(token: str):
+def decode_jwt(token: str):
     payload = jwt.decode(token, key=API_SECRET_KEY, audience=API_AUDIENCE)
     return payload
 
