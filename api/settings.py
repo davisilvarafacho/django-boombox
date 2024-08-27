@@ -74,6 +74,9 @@ LIBS_APPS = [
     "django_filters",
     "auditlog",
     "django_extensions",
+    "allauth",
+    "allauth.account",
+    "drf_spectacular",
 ]
 
 BOOMBOX_APPS = [
@@ -86,7 +89,7 @@ BOOMBOX_APPS = [
 INSTALLED_APPS = DJANGO_APPS + LIBS_APPS + BOOMBOX_APPS
 
 
-DJANGO_MIDDLEWARE = [
+MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.cache.UpdateCacheMiddleware",
@@ -97,18 +100,8 @@ DJANGO_MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
-]
-
-LIBS_MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
 ]
-
-BOOMBOX_MIDDLEWARE = []
-
-if IN_DEVELOPMENT:
-    BOOMBOX_MIDDLEWARE.append("apps.system.core.middlewares.DevMiddleware")
-
-MIDDLEWARE = DJANGO_MIDDLEWARE + LIBS_MIDDLEWARE + BOOMBOX_MIDDLEWARE
 
 
 ROOT_URLCONF = "api.urls"
@@ -246,9 +239,7 @@ REST_FRAMEWORK = {
         "apps.system.core.authentications.JwtHeaderTenantAuthentication",
         "apps.system.core.authentications.JwtQueryParamTenantAuthentication",
     ),
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.IsAuthenticated",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_FILTER_BACKENDS": (
         "rest_framework.filters.OrderingFilter",
         "rest_framework.filters.SearchFilter",
