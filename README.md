@@ -4,29 +4,28 @@ Django-Boombox é um projeto base para o desenvolvimento API's RESTful feitas em
 
 O objetivo do django-boombox é agilizar o inicio do desenvolvimento, instalando e configurando frameworks comuns a uma api, além de fornecer código com algumas funcionalidades úteis.
 
-
 ## Sobre
 
 Inicialmente, o objetivo do repositório era servir como um projeto base para eu não ter que criar os mesmo aplicativos e modelos que sempre utilizaca, mas com o tempo vi que outros desenvolvedores utilizavam as mesmas configurações e dependências que as minhas, então decidi abrir o meu repositório.
 
-
 ## Por que python e Django?
+
 O real motivo da escolha dessas tecnologias é: são as que eu domino, mas aqui vão alguns dos motivos porque eu, pessoalmente, recomendaria python e django para o seu projeto:
 
 ### python
+
 - muita liberdade e facilidade para criar objetos extremamente personalizados
 - as bibliotecas padrão do python por si só já resolvem diversos problemas na criação de uma api, tais como: logging, warings, serialização de json, entre outros
 - se bem configurado, python consegue excelentes métricas de performance, podendo ser ainda melhor, caso você configure o ambiente de produção com [pypy](https://www.pypy.org/)
 - gigantesca comunidade
 
-
 ### django
+
 - gigantesca gama de funcionalidades estáveis e de fácil implementação
 - extremamente prático
 - performático
 - extrema fácilidade de personalização do que for melhor para o seu projeto
 - grandes empresas utilizam o django, como por exemplo o instagram, pinterest e o youtube, mostrando o nível de confiabilidade do framework
-
 
 ## Como utilizar esse projeto
 
@@ -35,8 +34,7 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 1. Após clonar o repositório, exclua do git para remover o versionamento direto com o respositório do boombox
 2. Instale as dependencias
 3. Preencha as variáveis de ambiente
-4. Renomeie todas as constantes e suas utilizações que iniciem com o prefixo **BOOMBOX_** com o nome do seu projeto.
-
+4. Renomeie todas as constantes e suas utilizações que iniciem com o prefixo **BOOMBOX\_** com o nome do seu projeto.
 
 ## O que o projeto abrange
 
@@ -44,17 +42,16 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 2. banco de dados
 3. multi-tenancy
 4. cache
-5. testes(__em desenvolvimento__)
-6. documentação(__em desenvolvimento__)
-7. bacground tasks(__em desenvolvimento__)
+5. testes(**em desenvolvimento**)
+6. documentação(**em desenvolvimento**)
+7. bacground tasks(**em desenvolvimento**)
 8. variáveis de ambiente
 9. deploy
 10. CI
 11. ambiente de desenvolvimento
-12. estrutura de pastas(__em desenvolvimento__)
-13. padrões de desenvolvimento(__em desenvolvimento__)
-14. linting e formatação(__em desenvolvimento__)
-
+12. estrutura de pastas(**em desenvolvimento**)
+13. padrões de desenvolvimento(**em desenvolvimento**)
+14. linting e formatação(**em desenvolvimento**)
 
 <!-- ### Autenticação
 
@@ -78,7 +75,6 @@ As urls do knox são importadas no arquivo [api/urls.py](https://github.com/davi
 
 Para mais informações acesse a [documentação](https://jazzband.github.io/django-rest-knox/) -->
 
-
 ### Banco de dados
 
 O banco de dados escolhido foi o [postgres](https://www.postgresql.org/), devido a sua robustez e ampla gama de funcionalidades que ele provê e outros bancos relacionais não. Além disso, o django possui funcionalidades que são exclusivas com o postgres, como por exemplo, a personalização dos campos que serão utilizados pelo método `distinct` da queryset do django, como descrito na [documentação](https://docs.djangoproject.com/en/5.0/ref/models/querysets/#django.db.models.query.QuerySet.distinct).
@@ -99,7 +95,7 @@ Além disso, como se tudo o que já foi dito não bastasse, o postgres tem a fam
 
 ### Multi-Tenancy
 
-Devido o django-boombox ser uma aplicação pensada para um SaaS, ele possui um esquema nativo para multi-tenancy, em cada requisição é setado o tenant no qual os dados serão acessados. 
+Devido o django-boombox ser uma aplicação pensada para um SaaS, ele possui um esquema nativo para multi-tenancy, em cada requisição é setado o tenant no qual os dados serão acessados.
 
 Isso é feito em [apps/system/core/authentications.py](https://github.com/davisilvarafacho/django-boombox/blob/70667cae72ebb191c8101966b2ed4042e1ad7310/apps/system/core/authentications.py)
 
@@ -113,12 +109,12 @@ Devido o django-boombox ter uma multitênancia física - cada tenant tem seu ban
 > O tipo de abordagem de cache ideal varia de aplicação para aplicação, no caso do django-cachalot ele guarda os dados retornados de uma query quando ela é executada, guardando toda a tabela no cache, pouco a pouco, mas caso você esteja desenvolvendo uma rede social ou algo uma aplicação que tenha um alto volume de escrita no banco, o django-cachalot não seria a ferramenta ideal.
 > Para entender melhor, acesse a [documentação do projeto](https://django-cachalot.readthedocs.io/en/latest/introduction.html#comparison-with-similar-tools)
 
-
-
-
 ### Testes
+
 ### Documentação
+
 ### Background tasks
+
 ### Variáveis de ambiente
 
 O django-boombox define alguns padrões para varíaveis de ambiente:
@@ -130,7 +126,7 @@ O django-boombox também possui algumas variáveis de ambiente personalizada:
 
 **DJANGO_MODE**
 
- Ele se refere ao "modo de execução" da api naquele momento e a partir dele surgem 2 constantes no `settings.py`: a `IN_DEVELOPMENT` e a `IN_PRODUCTION`.
+Ele se refere ao "modo de execução" da api naquele momento e a partir dele surgem 2 constantes no `settings.py`: a `IN_DEVELOPMENT` e a `IN_PRODUCTION`.
 
 Isso é útil porque nem sempre a constante `DEBUG` do `settings.py` nos fala tudo o que precisamos saber do atual estado da aplicação. As vezes colocamos a aplicação em produção com `DEBUG=True` para resolvermos um bug crítico. Logo, isso que certas funcionalidades que são feitas para serem executadas somente durante o desenvolvimento são garantidas 100%, além de melhorar a legibilidade do código.
 
@@ -153,8 +149,7 @@ Essa variável serve para dizer à api se, em determinadas situações, deve lan
 
 **risky** - lança as exceções
 
-**safety** - printa os warnings 
-
+**safety** - printa os warnings
 
 ### Deploy
 
@@ -167,7 +162,6 @@ O django-boombox contém arquivos docker configurados de forma genérica para at
 As configurações e estrutura foram pensadas e voltadas para o ambiente de produção.
 
 A estrutura, por padrão, conta com 4 containers: o **proxy**, a **api**, o **banco de dados** e o **cache**.
-
 
 **O porque do proxy**
 
@@ -193,11 +187,13 @@ Antes de tudo é necessário ter o docker instalado em sua máquina, seja ela [l
 Após instalado o docker, mova todos os arquivos da pasta docker para o diretório raiz.
 
 Logo em seguida, execute o comando abaixo para iniciar a aplicação.
+
 ```docker
 docker compose up --build -d
 ```
 
 Caso tudo dê certo, você deve ver uma saída parecida com essa:
+
 ```
 [+] Running 4/4
  ⠿ Container django-boombox-proxy  Started
@@ -208,8 +204,8 @@ Caso tudo dê certo, você deve ver uma saída parecida com essa:
 
 Para mais informações sobre as configurações do deploy, acesse a [documentação do docker](https://docs.docker.com/)
 
-
 ### CI
+
 O projeto é configurado com o [github actions](https://docs.github.com/pt/actions), que é uma plataformade [CI](https://www.atlassian.com/continuous-delivery/continuous-integration) do próprio github. Caso você utilize outra plataforma para versionamento, exclua a pasta `.github/`.
 
 Também tenho planos de incluir uma configuração para CI e CD com o [Jenkins](https://www.jenkins.io/) no futuro.
@@ -217,35 +213,36 @@ Também tenho planos de incluir uma configuração para CI e CD com o [Jenkins](
 ### Ambiente de desenvolvimento
 
 > [!NOTE]
-> Para utilizar o ambiente de desenvolvimento é necessário ter o [docker](https://docs.docker.com/engine/install/) instalado na sua máquina. 
+> Para utilizar o ambiente de desenvolvimento é necessário ter o [docker](https://docs.docker.com/engine/install/) instalado na sua máquina.
 
 O ambiente de desenvolvimento foi pensado para ser utilizado com o VSCode e sua extensão [dev containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). Ele configura um container docker com python para o desenvolvimento, um para servir como banco de dados da aplicação e outro para servir como cache
-
 
 O django-boombox não oferece suporte nativo para outras IDEs além do VSCode.
 
 ### Estrutura de diretórios
-### Padrões de desenvolvimento
-### Linting e formatação
 
+### Padrões de desenvolvimento
+
+### Linting e formatação
 
 ## FAQ - Dúvidas Frequentes
 
-
 ### Meu projeto não é uma API, ainda posso utiliza-lo apenas com o Django?
+
 Sim, contudo, é recomendável que você remova todas as depedências que são diretamente ligadas a criação de uma api, perdendo uma grande parte das funcionalidades unidas no projeto do django-boombox, como por exemplo a autenticação e confirmação de email.
 
-
 ### Meu projeto é uma api, mas não utiliza o djangorestframework, ainda posso utiliza-lo como base?
+
 A resposta curta é sim, mas acredito que será menos trabalhoso somente copiar/baixar os arquivos que você precisa do que clonar o repositório e remover as dependências e ajustar o código que você precisar.
 
 ### Como remover as dependências e funcionalidades que eu não vou utilizar?
+
 Infelizmente o único jeito a se fazer isso no momento é apagar manualmente os arquivos e desisntalando as dependências com o comando `pip uninstall` ou apagando elas do arquivo `requirements.txt`. Contudo, já tenho em mente a criação de um CLI para configurar de maneira automática e personalizada as depedências de acordo com a preferencia do desenvolvedor.
 
 Até a construação de CLI, vou tentar deixar o mais explícito e claro possível a localização dos arquivos e depedências, onde são usados e onde eles impactam.
 
-
 ## Frameworks e bibliotecas utilizados
+
 1. [django](https://github.com/django/django)
 2. [psycopg2](https://github.com/psycopg/psycopg2)
 3. [django-rest-framework](https://github.com/encode/django-rest-framework)
@@ -255,7 +252,12 @@ Até a construação de CLI, vou tentar deixar o mais explícito e claro possív
 7. [django-redis](https://github.com/jazzband/django-redis)
 8. [django-extensions](https://github.com/django-extensions/django-extensions)
 9. [redis-py](https://github.com/redis/redis-py)
-10. [pika](https://github.com/pika/pika)
+10. [django-auditlog](https://github.com/jazzband/django-auditlog)
+11. [drf-spectacular](https://github.com/tfranzel/drf-spectacular)
+12. [drf-extensions](https://github.com/chibisov/drf-extensions)
+13. [django-allauth](https://github.com/pennersr/django-allauth)
+14. [pika](https://github.com/pika/pika)
+15. [httpx](https://github.com/projectdiscovery/httpx)
 
 ### Insipiração
 
