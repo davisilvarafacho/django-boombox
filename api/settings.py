@@ -102,6 +102,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 
@@ -168,11 +169,15 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.Usuario"
 
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+
 DATE_FORMAT = "d/m/Y"
 
-
 LANGUAGE_CODE = "pt-br"
-
 
 TIME_ZONE = "America/Sao_Paulo"
 
@@ -271,6 +276,17 @@ SIMPLE_JWT = {
 CACHALOT_QUERY_KEYGEN = "apps.system.tenants.cache.gen_query_cache_key"
 
 CACHALOT_TABLE_KEYGEN = "apps.system.tenants.cache.gen_query_table_key"
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': '',
+            'secret': '',
+            'key': ''
+        }
+    }
+}
 
 
 HEADLESS_FRONTEND_URLS = {
