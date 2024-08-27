@@ -7,6 +7,8 @@ apps_urls = [path("api/", include(app + ".urls")) for app in settings.BOOMBOX_AP
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path("_allauth/", include("allauth.headless.urls")),
     *apps_urls,
 ]
 

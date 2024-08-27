@@ -68,15 +68,16 @@ DJANGO_APPS = [
 ]
 
 LIBS_APPS = [
-    "rest_framework",
-    "corsheaders",
-    "cachalot",
-    "django_filters",
     "auditlog",
-    "django_extensions",
     "allauth",
     "allauth.account",
+    "allauth.headless",
+    "cachalot",
+    "corsheaders",
+    "django_filters",
+    "django_extensions",
     "drf_spectacular",
+    "rest_framework",
 ]
 
 BOOMBOX_APPS = [
@@ -217,6 +218,7 @@ DEFAULT_FROM_EMAIL = None
 
 AUTH_QUERY_PARAM_NAME = "jwt"
 
+
 MULTITENANCY_DATABASE_PREFIX = "boombox"
 
 
@@ -230,6 +232,9 @@ RABBITMQ_PORT = get_environ_var(environ_keys.RABBITMQ_PORT)
 
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+HEADLESS_ONLY = True
 
 
 REST_FRAMEWORK = {
@@ -249,7 +254,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("Bearer", "JWT"),
+    "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 1),
     "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 3),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.LoginSerializer",
@@ -266,3 +271,10 @@ SIMPLE_JWT = {
 CACHALOT_QUERY_KEYGEN = "apps.system.tenants.cache.gen_query_cache_key"
 
 CACHALOT_TABLE_KEYGEN = "apps.system.tenants.cache.gen_query_table_key"
+
+
+HEADLESS_FRONTEND_URLS = {
+    "account_confirm_email": "https://app.domain.com/account/verify-email/{key}",
+    "account_reset_password_from_key": "https://domain.com/account/password/reset/key/{key}",
+    "account_signup": "https://domain.com/account/signup",
+}
