@@ -169,12 +169,6 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.Usuario"
 
 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-
-
 DATE_FORMAT = "d/m/Y"
 
 LANGUAGE_CODE = "pt-br"
@@ -255,6 +249,7 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
@@ -272,25 +267,21 @@ SIMPLE_JWT = {
     "ISSUER": None,
 }
 
-
 CACHALOT_QUERY_KEYGEN = "apps.system.tenants.cache.gen_query_cache_key"
 
 CACHALOT_TABLE_KEYGEN = "apps.system.tenants.cache.gen_query_table_key"
-
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': '',
-            'secret': '',
-            'key': ''
-        }
-    }
-}
 
 
 HEADLESS_FRONTEND_URLS = {
     "account_confirm_email": "https://app.domain.com/account/verify-email/{key}",
     "account_reset_password_from_key": "https://domain.com/account/password/reset/key/{key}",
     "account_signup": "https://domain.com/account/signup",
+}
+
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Django-Boombox API Docs",
+    "DESCRIPTION": "Documentação auto generativa com drf-spetacular",
+    "VERSION": "0.0.1-beta",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
