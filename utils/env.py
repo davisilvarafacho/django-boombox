@@ -23,7 +23,5 @@ EnviromentVar = Literal[
 ]
 
 
-environ_keys = EnviromentVars
-
 def get_environ_var(key: EnviromentVar):
     return os.environ.get(key)
