@@ -3,6 +3,8 @@ from typing import Literal
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from auditlog.registry import auditlog
+
 from apps.system.base.models import Base
 
 
@@ -53,5 +55,4 @@ class Configuracao(Base):
         return self.cf_codigo
 
 
-configuracoes = Configuracao.opcoes_configuracoes
-configuracao_sistema = Configuracao.configuracao_sistema
+auditlog.register(Usuario)
