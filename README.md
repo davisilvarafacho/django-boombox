@@ -47,7 +47,7 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 1. logs(**em desenvolvimento**)
 1. bacground tasks(**em desenvolvimento**)
 1. variáveis de ambiente
-1. deploy
+1. deploy & produção
 1. CI
 1. ambiente de desenvolvimento
 1. linting e formatação(**em desenvolvimento**)
@@ -92,7 +92,7 @@ Além disso, como se tudo o que já foi dito não bastasse, o postgres tem a fam
 
 **Conclusão:** não compensa trocar toda todo o universo de funcionalidades e extensões do posgres e a sua robustez por um ganho de 4ms a 7ms. E mais, tais funcionalidades resolvem, diversas vezes, problemas complexos de maneira simples e fácil, desde que você conheça o postgres o suficiente para isso, fora que, caso sua aplicação precise de alguma dessas funcionalidades, você terá de desenvolve-las por contra própria, ou procurar alguma biblioteca externa.
 
-### Multi-Tenancy
+### Multitenancy
 
 Devido o django-boombox ser uma aplicação pensada para um SaaS, ele possui um esquema nativo para multi-tenancy, em cada requisição é setado o tenant no qual os dados serão acessados.
 
@@ -217,14 +217,6 @@ Também tenho planos de incluir uma configuração para CI e CD com o [Jenkins](
 O ambiente de desenvolvimento foi pensado para ser utilizado com o VSCode e sua extensão [dev containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers). Ele configura um container docker com python para o desenvolvimento, um para servir como banco de dados da aplicação e outro para servir como cache
 
 O django-boombox não oferece suporte nativo para outras IDEs além do VSCode.
-
-### Estrutura de diretórios
-
-### Padrões de desenvolvimento
-
-### Linting e formatação
-
-## FAQ - Dúvidas Frequentes
 
 ### Meu projeto não é uma API, ainda posso utiliza-lo apenas com o Django?
 
