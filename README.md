@@ -39,19 +39,18 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 ## O que o projeto abrange
 
 1. autenticação
-2. banco de dados
-3. multi-tenancy
-4. cache
-5. testes(**em desenvolvimento**)
-6. documentação(**em desenvolvimento**)
-7. bacground tasks(**em desenvolvimento**)
-8. variáveis de ambiente
-9. deploy
-10. CI
-11. ambiente de desenvolvimento
-12. estrutura de pastas(**em desenvolvimento**)
-13. padrões de desenvolvimento(**em desenvolvimento**)
-14. linting e formatação(**em desenvolvimento**)
+1. banco de dados
+1. multitenancy
+1. cache
+1. testes(**em desenvolvimento**)
+1. documentação(**em desenvolvimento**)
+1. logs(**em desenvolvimento**)
+1. bacground tasks(**em desenvolvimento**)
+1. variáveis de ambiente
+1. deploy
+1. CI
+1. ambiente de desenvolvimento
+1. linting e formatação(**em desenvolvimento**)
 
 <!-- ### Autenticação
 
