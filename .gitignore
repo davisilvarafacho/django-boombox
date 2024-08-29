@@ -60,10 +60,6 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-apps/*/migrations/*
-apps/system/*/migrations/*
-!apps/*/migrations/__init__.py
-!apps/system*/migrations/__init__.py
 mediafiles/
 staticfiles/
 
