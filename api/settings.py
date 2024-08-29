@@ -8,7 +8,7 @@ from django.core.management.utils import get_random_secret_key
 
 from pathlib import Path
 
-from utils.environment import get_environ_var, environ_keys
+from utils.env import get_environ_var, environ_keys
 
 
 def get_bool_from_env(name, default_value):
