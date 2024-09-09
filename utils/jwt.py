@@ -4,7 +4,7 @@ import uuid
 from django.conf import settings
 from django.utils import timezone
 
-from .environment import get_environ_var
+from .env import get_environ_var
 
 API_SECRET_KEY = get_environ_var('DJANGO_SECRET_KEY')
 API_AUDIENCE = settings.SIMPLE_JWT["AUDIENCE"]
