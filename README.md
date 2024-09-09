@@ -43,36 +43,25 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 1. multitenancy
 1. cache
 1. testes(**em desenvolvimento**)
-1. documentação(**em desenvolvimento**)
 1. logs(**em desenvolvimento**)
-1. bacground tasks(**em desenvolvimento**)
+1. background tasks(**em desenvolvimento**)
 1. variáveis de ambiente
 1. deploy & produção
 1. CI
 1. ambiente de desenvolvimento
 1. linting e formatação(**em desenvolvimento**)
+1. documentação(**em desenvolvimento**)
 
-<!-- ### Autenticação
+### Autenticação
 
-A autenticação é feita com a biblioteca [knox](https://github.com/jazzband/django-rest-knox) o qual é desenvovlido e mantido pela [jazzband](https://github.com/jazzband), uma grande comunidade, já consolidada no mundo open-source, focada em projetos python.
+A autenticação é feita com a biblioteca [djangorestframework-simplejwt](https://github.com/jazzband/djangorestframework-simplejwt) o qual é desenvovlido e mantido pela [jazzband](https://github.com/jazzband), uma grande comunidade, já consolidada no mundo open-source, focada em projetos python.
 
-
-O knox é uma autenticação via token que provisiona um token por cliente, ou seja, cada dispositivo que deseja se conectar a api, terá seu próprio token.
-
-
-Aqui estão as principais funcionalidades do knox:
-
-* os tokens podem ser configurados para expirarem após um certo tempo
-
-* os tokens são salvos criptografados no banco de dados, garantindo que, caso o banco de dados seja roubado ou violado, os hackers não consigam se autenticar com os tokens do usuários.
-
-* permite a deleção de todos os tokens de uma só vez, forçando todos os dispositivos a re-autenticar em todos os dispositivos
-
+O simple jwt é uma autenticação via token que 
 
 As urls do knox são importadas no arquivo [api/urls.py](https://github.com/davisilvarafacho/django-boombox/blob/a6fd9741b984d0006b9c64c864c6011124da3484/api/urls.py).
 
 
-Para mais informações acesse a [documentação](https://jazzband.github.io/django-rest-knox/) -->
+Para mais informações acesse a [documentação](https://jazzband.github.io/django-rest-knox/)
 
 ### Banco de dados
 
