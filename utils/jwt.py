@@ -4,9 +4,9 @@ import uuid
 from django.conf import settings
 from django.utils import timezone
 
-from .env import get_environ_var
+from .env import get_env_var
 
-API_SECRET_KEY = get_environ_var('DJANGO_SECRET_KEY')
+API_SECRET_KEY = get_env_var('DJANGO_SECRET_KEY')
 API_AUDIENCE = settings.SIMPLE_JWT["AUDIENCE"]
 API_ISSUER = settings.SIMPLE_JWT["ISSUER"]
 DEFAULT_JWT_PAYLOAD_CONTENT = {

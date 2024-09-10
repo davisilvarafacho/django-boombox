@@ -8,7 +8,7 @@ from django.core.management.utils import get_random_secret_key
 
 from pathlib import Path
 
-from utils.env import get_environ_var
+from utils.env import get_env_var
 
 
 def get_bool_from_env(name, default_value):
@@ -23,17 +23,17 @@ def get_bool_from_env(name, default_value):
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = get_environ_var("DJANGO_SECRET_KEY")
+SECRET_KEY = get_env_var("DJANGO_SECRET_KEY")
 
 DEBUG = get_bool_from_env("DJANGO_DEBUG", True)
 
-MODE = get_environ_var("DJANGO_MODE")
+MODE = get_env_var("DJANGO_MODE")
 
 IN_DEVELOPMENT = MODE == "development"
 
 IN_PRODUCTION = MODE == "production"
 
-EXECUTION = get_environ_var("DJANGO_EXECUTION_MODE")
+EXECUTION = get_env_var("DJANGO_EXECUTION_MODE")
 
 
 if not SECRET_KEY and DEBUG:
@@ -125,11 +125,11 @@ WSGI_APPLICATION = "api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": get_environ_var("DATABASE_NAME"),
-        "USER": get_environ_var("DATABASE_USER"),
-        "PASSWORD": get_environ_var("DATABASE_PASSWORD"),
-        "HOST": get_environ_var("DATABASE_HOST"),
-        "PORT": get_environ_var("DATABASE_PORT"),
+        "NAME": get_env_var("DATABASE_NAME"),
+        "USER": get_env_var("DATABASE_USER"),
+        "PASSWORD": get_env_var("DATABASE_PASSWORD"),
+        "HOST": get_env_var("DATABASE_HOST"),
+        "PORT": get_env_var("DATABASE_PORT"),
     },
 }
 
@@ -137,7 +137,7 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://{get_environ_var('REDIS_HOST')}:{get_environ_var('REDIS_PORT')}",
+        "LOCATION": f"redis://{get_env_var('REDIS_HOST')}:{get_env_var('REDIS_PORT')}",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         },
@@ -205,7 +205,7 @@ EMAIL_PORT = None
 
 EMAIL_HOST_USER = None
 
-EMAIL_HOST_PASSWORD = get_environ_var("EMAIL_PASSWORD")
+EMAIL_HOST_PASSWORD = get_env_var("EMAIL_PASSWORD")
 
 DEFAULT_FROM_EMAIL = None
 
@@ -216,13 +216,13 @@ AUTH_QUERY_PARAM_NAME = "jwt"
 MULTITENANCY_DATABASE_PREFIX = "boombox"
 
 
-RABBITMQ_HOST = get_environ_var("RABBITMQ_HOST")
+RABBITMQ_HOST = get_env_var("RABBITMQ_HOST")
 
-RABBITMQ_USER = get_environ_var("RABBITMQ_USER")
+RABBITMQ_USER = get_env_var("RABBITMQ_USER")
 
-RABBITMQ_PSSWD = get_environ_var("RABBITMQ_PSSWD")
+RABBITMQ_PSSWD = get_env_var("RABBITMQ_PSSWD")
 
-RABBITMQ_PORT = get_environ_var("RABBITMQ_PORT")
+RABBITMQ_PORT = get_env_var("RABBITMQ_PORT")
 
 
 CORS_ALLOW_ALL_ORIGINS = True

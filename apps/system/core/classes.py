@@ -7,7 +7,7 @@ from django.core.signing import Signer, BadSignature
 from django.db import connection
 from django.template.loader import get_template
 
-from utils.env import get_environ_var
+from utils.env import get_env_var
 
 
 class SingletonMeta(type):
@@ -142,10 +142,10 @@ class DatabasesLoader:
             conf_db = {
                 "ENGINE": "django.db.backends.postgresql",
                 "NAME": db,
-                "USER": get_environ_var("DATABASE_USER"),
-                "PASSWORD": get_environ_var("DATABASE_PASSWORD"),
-                "HOST": get_environ_var("DATABASE_HOST"),
-                "PORT": get_environ_var("DATABASE_PORT"),
+                "USER": get_env_var("DATABASE_USER"),
+                "PASSWORD": get_env_var("DATABASE_PASSWORD"),
+                "HOST": get_env_var("DATABASE_HOST"),
+                "PORT": get_env_var("DATABASE_PORT"),
                 "ATOMIC_REQUESTS": False,
                 "AUTOCOMMIT": True,
                 "CONN_MAX_AGE": 0,
