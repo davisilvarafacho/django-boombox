@@ -69,14 +69,10 @@ DJANGO_APPS = [
 
 LIBS_APPS = [
     "auditlog",
-    "allauth",
-    "allauth.account",
-    "allauth.headless",
     "cachalot",
     "corsheaders",
     "django_filters",
     "django_extensions",
-    "drf_spectacular",
     "rest_framework",
 ]
 
@@ -249,7 +245,6 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 

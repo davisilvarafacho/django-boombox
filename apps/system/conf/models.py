@@ -55,4 +55,4 @@ class Configuracao(Base):
         return self.cf_codigo
 
 
-auditlog.register(Usuario)
+auditlog.register(Configuracao)
