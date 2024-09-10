@@ -85,14 +85,14 @@ class Email:
             return
 
         if len(self._destinatarios) == self.MAX_RECIPIENTS:
-            raise self.InvalidNumberRecipients(
+            raise self.InvalidRecipientsNumber(
                 "O número máximo de destinatários é 200")
 
         self._destinatarios.append(destinatario)
 
     def send(self):
         if len(self._destinatarios) == 0:
-            raise self.InvalidNumberRecipients("Informe ao menos um destinatário")
+            raise self.InvalidRecipientsNumber("Informe ao menos um destinatário")
 
         assert self.corpo is None or self._template_path is None, (
             "Os argumentos 'corpo' ou 'template' deve ser configurados"
