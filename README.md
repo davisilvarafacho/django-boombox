@@ -42,26 +42,17 @@ Siga esses passos para iniciar o desenvolvimento da sua aplicação:
 1. banco de dados
 1. multitenancy
 1. cache
-1. testes(**em desenvolvimento**)
-1. logs(**em desenvolvimento**)
-1. background tasks(**em desenvolvimento**)
+1. logs
 1. variáveis de ambiente
 1. deploy & produção
 1. CI
 1. ambiente de desenvolvimento
-1. linting e formatação(**em desenvolvimento**)
-1. documentação(**em desenvolvimento**)
 
 ### Autenticação
 
 A autenticação é feita com a biblioteca [djangorestframework-simplejwt](https://github.com/jazzband/djangorestframework-simplejwt) o qual é desenvovlido e mantido pela [jazzband](https://github.com/jazzband), uma grande comunidade, já consolidada no mundo open-source, focada em projetos python.
 
-O simple jwt é uma autenticação via token que 
-
-As urls do knox são importadas no arquivo [api/urls.py](https://github.com/davisilvarafacho/django-boombox/blob/a6fd9741b984d0006b9c64c864c6011124da3484/api/urls.py).
-
-
-Para mais informações acesse a [documentação](https://jazzband.github.io/django-rest-knox/)
+Para mais informações de funcionamento da biblioteca acesse a [documentação](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/) e caso não esteja familiarizado com o JWT, acesse o [site oficial](https://jwt.io/)
 
 ### Banco de dados
 
@@ -97,11 +88,21 @@ Devido o django-boombox ter uma multitênancia física - cada tenant tem seu ban
 > O tipo de abordagem de cache ideal varia de aplicação para aplicação, no caso do django-cachalot ele guarda os dados retornados de uma query quando ela é executada, guardando toda a tabela no cache, pouco a pouco, mas caso você esteja desenvolvendo uma rede social ou algo uma aplicação que tenha um alto volume de escrita no banco, o django-cachalot não seria a ferramenta ideal.
 > Para entender melhor, acesse a [documentação do projeto](https://django-cachalot.readthedocs.io/en/latest/introduction.html#comparison-with-similar-tools)
 
-### Testes
+### Logs
 
-### Documentação
+Os logs dos modelos são feitos com o framework [django-auditlog](https://github.com/jazzband/django-auditlog), **funcionando apenas a nível de api**, ou seja, caso o seu banco de dados sofra qualquer alteração fora da api - seja via triggers do banco de dados ou alterações manuais, elas não serão registras e terão de ser feitas manualmente.
 
-### Background tasks
+Os logs podem ser feitos [manualmente](https://django-auditlog.readthedocs.io/en/latest/usage.html#manually-logging-changes), ou automáticamente, como no exemplo abaixo:
+
+```python
+from auditlog.registry import auditlog
+
+auditlog.register(MyModel)
+
+```
+Dessa forma todas as ações de criação, edição e deleção do registro serão feitas automáticamente. Caso vocẽ queira ter logs de visualização também é possível, além disso é possível personalizar quais campos serão auditados e quais não.
+
+Para mais informações de funcionamento da biblioteca acesse a [documentação](https://django-auditlog.readthedocs.io/en/latest/)
 
 ### Variáveis de ambiente
 
