@@ -25,6 +25,17 @@ class UsuarioSerializer(serializers.ModelSerializer):
         )
 
 
+class OnwerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+            "email",
+        )
+
+
 class LoginSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         authenticate_kwargs = {
@@ -72,3 +83,4 @@ class LoginSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         return token
+
