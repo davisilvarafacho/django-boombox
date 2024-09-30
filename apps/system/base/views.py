@@ -2,6 +2,7 @@ from django.db.models import ProtectedError
 
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 
@@ -14,9 +15,11 @@ class BaseViewSet(GenericViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
         distinct_fields = self.request.query_params.get("distinct", None)
         if distinct_fields is not None:
-            return queryset.distinct(*distinct_fields)
+            queryset = queryset.distinct(*distinct_fields)
+
         return queryset
 
     def get_serializer_class(self):
@@ -37,24 +40,6 @@ class BaseModelViewSet(ModelViewSet):
     filterset_fields = {}
     search_fields = []
     ordering_fields = []
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        distinct_fields = self.request.query_params.get("distinct", None)
-        if distinct_fields is not None:
-            return queryset.distinct(*distinct_fields)
-        return queryset
-
-    def get_serializer_class(self):
-        assert self.serializer_classes != {} or self.serializer_class is not None, (
-            "'%s' deve implementar o 'serializer_class' ou  'serializer_classes'."
-            % self.__class__.__name__
-        )
-
-        if self.serializer_class:
-            return self.serializer_class
-
-        return self.serializer_classes[self.action]
 
     def get_object(self):
         instance = super().get_object()
@@ -80,7 +65,7 @@ class BaseModelViewSet(ModelViewSet):
 
         except ProtectedError as ex:
             return Response(
-                {"mensagem": "Esse registro já foi utilizado pelo sistema"},
+                {"mensagem": "Esse registro não pode ser excluído por estar vínculado a outro registro na base de dados"},
                 status=status.HTTP_409_CONFLICT,
             )
 
