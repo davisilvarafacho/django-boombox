@@ -2,11 +2,11 @@ from django.db.models import ProtectedError
 
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.viewsets import ModelViewSet, ViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 
 
-class BaseViewSet(ViewSet):
+class BaseViewSet(GenericViewSet):
     serializer_classes = {}
     serializer_class = None
     filterset_fields = {}
