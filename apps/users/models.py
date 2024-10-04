@@ -1,7 +1,7 @@
-from django.db import models
 from django.core.validators import MinLengthValidator
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import AbstractUser, UserManager
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from auditlog.registry import auditlog
@@ -39,9 +39,7 @@ class Usuario(AbstractUser):
     last_name = models.CharField(_("sobrenome"), max_length=60)
     email = models.EmailField(_("email"), unique=True)
     cellphone = models.CharField(
-        _("celular"),
-        validators=(MinLengthValidator(11),),
-        null=True
+        _("celular"), validators=(MinLengthValidator(11),), null=True
     )
 
     EMAIL_FIELD = "email"
@@ -59,7 +57,7 @@ class Usuario(AbstractUser):
         verbose_name = _("Usuário")
         verbose_name_plural = _("Usuários")
         indexes = [
-            models.Index(fields=['email'], name='email_idx'),
+            models.Index(fields=["email"], name="email_idx"),
         ]
 
 
