@@ -64,10 +64,9 @@ class CachedFile:
 class Email:
     MAX_RECIPIENTS = 200
 
-    class InvalidRecipientsNumber(Exception):
-        pass
-
-    def __init__(self, titulo, corpo=None, destinatarios=[], from_email=settings.EMAIL_HOST_USER):
+    def __init__(
+        self, titulo, corpo=None, destinatarios=[], from_email=settings.EMAIL_HOST_USER
+    ):
         self.titulo = titulo
         self.corpo = corpo
 
@@ -85,18 +84,17 @@ class Email:
             return
 
         if len(self._destinatarios) == self.MAX_RECIPIENTS:
-            raise self.InvalidRecipientsNumber(
-                "O número máximo de destinatários é 200")
+            raise ValueError("O número máximo de destinatários é 200")
 
         self._destinatarios.append(destinatario)
 
     def send(self):
         if len(self._destinatarios) == 0:
-            raise self.InvalidRecipientsNumber("Informe ao menos um destinatário")
+            raise ValueError("Informe ao menos um destinatário")
 
-        assert self.corpo is None or self._template_path is None, (
-            "Os argumentos 'corpo' ou 'template' deve ser configurados"
-        )
+        assert (
+            self.corpo is None or self._template_path is None
+        ), "Os argumentos 'corpo' ou 'template' deve ser configurados"
 
         email = EmailMultiAlternatives(
             subject=self.titulo,
