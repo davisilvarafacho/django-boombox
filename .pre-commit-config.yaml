@@ -1,0 +1,13 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-black
+    rev: v23.3.0
+    hooks:
+      - id: black
+  - repo: https://github.com/PyCQA/pylint
+    rev: v2.18.0
+    hooks:
+      - id: pylint
+  - repo: https://github.com/pre-commit/mirrors-flake8
+    rev: v5.0.0
+    hooks:
+      - id: flake8
