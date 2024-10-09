@@ -1,3 +1,4 @@
+import ast
 import os
 
 from typing import Literal
@@ -23,5 +24,15 @@ EnviromentVar = Literal[
 ]
 
 
-def get_env_var(key: EnviromentVar):
+def get_env_var(key: EnviromentVar) -> str:
     return os.environ.get(key)
+
+
+def get_bool_from_env(name: EnviromentVar, default_value=False) -> bool:
+    if name in os.environ:
+        value = os.environ[name]
+        try:
+            return ast.literal_eval(value)
+        except ValueError as exc:
+            raise ValueError(f"'{value}' não é um valor válido para '{name}'") from exc
+    return default_value

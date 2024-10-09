@@ -1,25 +1,12 @@
-import ast
 import datetime
 import os
 import warnings
-
-from django.utils.translation import gettext_lazy as _
-from django.core.management.utils import get_random_secret_key
-
 from pathlib import Path
 
-from utils.env import get_env_var
+from django.core.management.utils import get_random_secret_key
+from django.utils.translation import gettext_lazy as _
 
-
-def get_bool_from_env(name, default_value):
-    if name in os.environ:
-        value = os.environ[name]
-        try:
-            return ast.literal_eval(value)
-        except ValueError as exc:
-            raise ValueError(f"'{value}' não é um valor válido para '{name}'") from exc
-    return default_value
-
+from utils.env import get_bool_from_env, get_env_var
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
