@@ -1,13 +1,14 @@
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
-from django.utils.translation import gettext_lazy as _
 from django.utils.module_loading import import_string
+from django.utils.translation import gettext_lazy as _
 
-from rest_framework import exceptions
-from rest_framework import serializers
-
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, PasswordField
+from rest_framework import exceptions, serializers
+from rest_framework_simplejwt.serializers import (
+    PasswordField,
+    TokenObtainPairSerializer,
+)
 
 from .models import Usuario
 
@@ -48,10 +49,16 @@ class LoginSerializer(TokenObtainPairSerializer):
         except KeyError:
             pass
 
-        usuario = Usuario.objects.filter(email=authenticate_kwargs[self.username_field]).first()
+        usuario = Usuario.objects.filter(
+            email=authenticate_kwargs[self.username_field]
+        ).first()
         if not usuario:
             raise exceptions.AuthenticationFailed(
-                {"mensagem": _("Esse email não está cadastrado em nossa base de dados")},
+                {
+                    "mensagem": _(
+                        "Esse email não está cadastrado em nossa base de dados"
+                    )
+                },
                 "not_found_account",
             )
 
@@ -63,13 +70,15 @@ class LoginSerializer(TokenObtainPairSerializer):
 
         self.user = authenticate(**authenticate_kwargs)
 
-        authentication_rule = import_string(settings.SIMPLE_JWT["USER_AUTHENTICATION_RULE"])
+        authentication_rule = import_string(
+            settings.SIMPLE_JWT["USER_AUTHENTICATION_RULE"]
+        )
         if not authentication_rule(self.user):
             raise exceptions.AuthenticationFailed(
                 {"mensagem": _("A senha informada está incorreta")},
                 "incorret_password",
             )
-    
+
         data = super().validate(attrs)
         refresh = self.get_token(self.user)
         data["access"] = str(refresh.access_token)
@@ -78,9 +87,8 @@ class LoginSerializer(TokenObtainPairSerializer):
             update_last_login(None, self.user)
 
         return data
-        
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
         return token
-
