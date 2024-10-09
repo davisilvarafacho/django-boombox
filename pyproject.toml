@@ -1,0 +1,33 @@
+[tool.black]
+# Configurações do Black
+line-length = 120  # Número máximo de caracteres por linha
+skip-string-normalization = false  # Normaliza strings, como aspas simples para duplas
+
+[tool.isort]
+# Configurações do isort
+profile = "black"  # Adapta a ordenação ao estilo do Black
+line_length = 120  # Mesma largura de linha que o Black
+known_django = ["django"]  # Define Django como pacote conhecido
+known_djangorestframework = ["rest_framework"]  # Define DRF como pacote conhecido
+default_section = "THIRDPARTY"  # Seção padrão para pacotes de terceiros
+multi_line_output = 3  # Formatação em múltiplas linhas
+include_trailing_comma = true  # Inclui vírgula em listas multi-line
+force_grid_wrap = 0  # Desativa a quebra em grid
+use_parentheses = true  # Usa parênteses para agrupamento
+order_by_type = true  # Ordena imports por tipo
+combine_as_imports = false  # Combina importações do mesmo pacote
+# Seções personalizadas para ordenação
+sections = [
+    "Django",
+    "DjangoRestFramework",
+    "THIRDPARTY",
+    "FIRSTPARTY"
+]
+
+[tool.pylint]
+# Configurações adicionais para Pylint (caso deseje integrá-lo)
+load-plugins = ["pylint_django"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
