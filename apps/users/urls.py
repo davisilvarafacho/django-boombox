@@ -2,14 +2,12 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from rest_framework_simplejwt.views import token_obtain_pair as login_view
+from .views import LoginViewSet, AuthViewSet
 
-from .views import UsuarioViewSet
-
-router_v1 = DefaultRouter()
-router_v1.register("usuarios", UsuarioViewSet, "usuarios")
+router_auth = DefaultRouter()
+router_auth.register("", AuthViewSet, "auth")
 
 urlpatterns = [
-    path("auth/login/", login_view),
-    path("v1/", include(router_v1.urls)),
+    path("auth/", include(router_auth.urls)),
+    path("auth/token/obtain/", LoginViewSet.as_view()),
 ]

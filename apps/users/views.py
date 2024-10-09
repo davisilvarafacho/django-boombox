@@ -1,55 +1,87 @@
-from django.utils.translation import gettext_lazy as _
-
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
 
-from apps.system.core.classes import Email
+from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import Usuario, UsuarioSerializer
+from apps.system.base.views import BaseViewSet
+
+from .serializers import (
+    Usuario,
+    UsuarioSerializer,
+    ReenviaEmailConfirmacaoSerializer,
+    ConfirmarEmailSerializer,
+    EnviarEmailRedefinicaoSenhaSerializer,
+    ConfirmarCodigoRedefinirSenhaSerializer,
+    RedefinirSenhaSerializer,
+)
 
 
-class UsuarioViewSet(ModelViewSet):
-    queryset = Usuario.objects.all()
+class LoginViewSet(TokenObtainPairView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
+
+
+class AuthViewSet(BaseViewSet):
     serializer_class = UsuarioSerializer
+    authentication_classes = []
+    permission_classes = [AllowAny]
 
-    def perform_create(self, serializer):
-        serializer.save(is_active=False)
-        self.enviar_email_confirmacao(serializer.instance.email)
-    
-    def enviar_email_confirmacao(self, email):
-        email = Email(_("Confirme seu email"), corpo="Clique no link abaixo para confirmar sua conta", destinatarios=[email])
-        email.send()
+    @action(methods=["get"], detail=False)
+    def validar_cadastro_email(self, request):
+        email = request.query_params.get("email", None)
+        if email is None:
+            raise ValidationError({"email": "Essa query é obrigatória"})
 
-    @action(methods=['get'], detail=False)
-    def verificar_cadastro_email(self, request, pk):
-        email_usuario = pk  # estou passando o email do usuário no lugar da pk
         try:
-            Usuario.objects.get(email=email_usuario)
-            return Response()
+            Usuario.objects.get(email=email)
+            return Response({"cadastrado": True})
         except Usuario.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response({"cadastrado": False})
 
-    @action(methods=['post'], detail=True)
-    def confirmar_email(self, request, pk):
-        instance = self.get_object()
-        if instance.is_active:
-            return Response({
-                "mensagem": _("Esse usuário já está ativo")
-            }, status=status.HTTP_400_BAD_REQUEST)
+    @action(methods=["post"], detail=False)
+    def cadastro(self, request):
+        serializer = UsuarioSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        instance.is_active = True
-        instance.save()
+    @action(methods=["post"], detail=False)
+    def confirmar_email(self, request):
+        serializer = ConfirmarEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["post"], detail=False)
+    def reenviar_email_confirmacao(self, request):
+        serializer = ReenviaEmailConfirmacaoSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    @action(methods=["post"], detail=False)
+    def enviar_email_redefinicao_senha(self, request):
+        serializer = EnviarEmailRedefinicaoSenhaSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response()
 
-    @action(methods=['post'], detail=True)
-    def reenviar_email(self, request, pk):
-        instance = self.get_object()
-        if instance.is_active:
-            return Response({
-                "mensagem": _("Esse usuário já está ativo")
-            }, status=status.HTTP_400_BAD_REQUEST)
+    @action(methods=["post"], detail=False)
+    def confirmar_codigo_redefinir_senha(self, request):
+        serializer = ConfirmarCodigoRedefinirSenhaSerializer(
+            data=request.data, context={"request": self.request}
+        )
+        serializer.is_valid(raise_exception=True)
+        return Response()
 
-        self.enviar_email_confirmacao(instance.email)
+    @action(methods=["post"], detail=False)
+    def redefinir_senha(self, request):
+        serializer = RedefinirSenhaSerializer(
+            data=request.data, context={"request": self.request}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response()
