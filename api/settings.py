@@ -1,6 +1,8 @@
 import datetime
 import os
+import logging
 import warnings
+
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
@@ -380,3 +382,12 @@ SIMPLE_JWT = {
 CACHALOT_QUERY_KEYGEN = "apps.system.tenants.cache.gen_query_cache_key"
 
 CACHALOT_TABLE_KEYGEN = "apps.system.tenants.cache.gen_query_table_key"
+
+
+AXES_FAILURE_LIMIT = 7
+
+AXES_COOLOFF_TIME = datetime.timedelta(minutes=30)
+
+AXES_RESET_ON_SUCCESS = True
+
+AXES_USERNAME_FORM_FIELD = "login"
