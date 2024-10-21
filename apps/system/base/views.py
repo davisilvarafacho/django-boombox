@@ -63,7 +63,7 @@ class BaseModelViewSet(ModelViewSet):
             self.perform_destroy(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        except ProtectedError as ex:
+        except ProtectedError:
             return Response(
                 {"mensagem": "Esse registro não pode ser excluído por estar vínculado a outro registro na base de dados"},
                 status=status.HTTP_409_CONFLICT,
