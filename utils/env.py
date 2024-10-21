@@ -8,6 +8,7 @@ EnviromentVar = Literal[
     "DJANGO_DEBUG",
     "DJANGO_MODE",
     "DJANGO_EXECUTION_MODE",
+    "DJANGO_LOG_LEVEL",
     "DATABASE_NAME",
     "DATABASE_USER",
     "DATABASE_PASSWORD",

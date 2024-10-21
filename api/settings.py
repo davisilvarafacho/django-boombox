@@ -197,6 +197,135 @@ EMAIL_HOST_PASSWORD = get_env_var("EMAIL_PASSWORD")
 DEFAULT_FROM_EMAIL = None
 
 
+
+LOGGING_ROOT = os.path.join(BASE_DIR, "logs/")
+
+LOGGING = {
+    "version": 1,
+    # "disable_existing_loggers": False,
+    "formatters": {
+        "simple": {"format": "%(levelname)s %(message)s"},
+        "verbose": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S",
+        },
+        "api_formatter": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s - LOG - %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S",
+        },
+        "error_formatter": {
+            "format": "%(asctime)s [%(levelname)s] %(name)s - ERROR - %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S",
+        },
+        "cloud_formatter": {
+            "format": "%(asctime)s id-zettabyte %(name)s: [%(levelname)s] %(message)s",
+            "datefmt": "%Y-%m-%dT%H:%M:%S",
+        },
+    },
+    "filters": {
+        "warnings_filter": {
+            "()": "django.utils.log.CallbackFilter",
+            "callback": lambda record: record.levelno == logging.WARNING,
+        },
+        "api_filter": {
+            "()": "django.utils.log.CallbackFilter",
+            "callback": lambda record: record.levelno >= logging.INFO,
+        },
+        "error_filter": {
+            "()": "django.utils.log.CallbackFilter",
+            "callback": lambda record: record.levelno >= logging.ERROR,
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "api_formatter",
+        },
+        "api_activity": {
+            "level": "DEBUG",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "api_activity.log"),
+            "maxBytes": 1024 * 1024 * 5,
+            "backupCount": 10,
+            "formatter": "api_formatter",
+            "filters": ["api_filter"],
+        },
+        "api_warnings": {
+            "level": "WARNING",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "warnings.log"),
+            "maxBytes": 1024 * 1024 * 10,
+            "backupCount": 2,
+            "formatter": "api_formatter",
+            "filters": ["warnings_filter"],
+        },
+        "api_errors": {
+            "level": "ERROR",
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOGGING_ROOT, "errors.log"),
+            "maxBytes": 1024 * 1024 * 50,
+            "backupCount": 10,
+            "formatter": "error_formatter",
+            "filters": ["error_filter"],
+        },
+        "api_errors_mail": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            "formatter": "error_formatter",
+            "filters": ["error_filter"],
+        },
+        "api_cloud_log": {
+            "level": "DEBUG",
+            "class": "logging.handlers.SysLogHandler",
+            "formatter": "cloud_formatter",
+            "address": ("subdomain.logs.com", 12345),
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["api_activity", "api_errors"],
+            "level": get_env_var("DJANGO_LOG_LEVEL"),
+            "propagate": True,
+        },
+        "django": {
+            "handlers": ["console"],
+            "level": get_env_var("DJANGO_LOG_LEVEL"),
+            "propagate": False,
+        },
+        "axes": {
+            "handlers": ["console"],
+            "level": get_env_var("DJANGO_LOG_LEVEL"),
+            "propagate": False,
+        },
+        "api": {
+            "handlers": ["api_activity", "api_errors"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "warning": {
+            "handlers": ["api_warnings"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+        "error": {
+            "handlers": ["api_errors", "console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "cloud": {
+            "handlers": ["api_cloud_log"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
+}
+
+
+if IN_PRODUCTION:
+    LOGGING["loggers"][""]["handlers"] += ["api_cloud_log", "api_errors_mail"]
+
+
 AUTH_QUERY_PARAM_NAME = "jwt"
 
 
@@ -251,18 +380,3 @@ SIMPLE_JWT = {
 CACHALOT_QUERY_KEYGEN = "apps.system.tenants.cache.gen_query_cache_key"
 
 CACHALOT_TABLE_KEYGEN = "apps.system.tenants.cache.gen_query_table_key"
-
-
-HEADLESS_FRONTEND_URLS = {
-    "account_confirm_email": "https://app.domain.com/account/verify-email/{key}",
-    "account_reset_password_from_key": "https://domain.com/account/password/reset/key/{key}",
-    "account_signup": "https://domain.com/account/signup",
-}
-
-
-SPECTACULAR_SETTINGS = {
-    "TITLE": "Django-Boombox API Docs",
-    "DESCRIPTION": "Documentação auto generativa com drf-spetacular",
-    "VERSION": "0.0.1-beta",
-    "SERVE_INCLUDE_SCHEMA": False,
-}
