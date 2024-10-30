@@ -1,39 +1,30 @@
 import json
 
+from django.conf import settings
 from django.db import models
 from django.forms.models import model_to_dict
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings
+
+from django_multitenant.models import TenantModel
 
 
-class Base(models.Model):
+class SimNao(models.TextChoices):
+    SIM = "S", _("Sim")
+    NAO = "N", _("Não")
+
+
+class Base(TenantModel):
     """
     Modelo base contendo campos padrão para controle interno do
     sistema, como data e hora de criação e alteração.
     """
 
-    SIM_NAO = (
-        ("S", "Sim"),
-        ("N", "Não"),
-    )
-
-    class opcoes_sim_nao:
-        SIM = "Sim"
-        NAO = "Não"
-
-    ZERO_UM = (
-        ("0", "0"),
-        ("1", "1"),
-    )
-
-    class opcoes_zero_um:
-        ZERO = "0"
-        UM = "1"
-
+    tenant_id = "tenante_id"
+    
     ativo = models.CharField(
         _("ativo"),
         max_length=1,
-        choices=SIM_NAO,
+        choices=SimNao,
         default="S",
     )
 
@@ -63,9 +54,11 @@ class Base(models.Model):
         on_delete=models.PROTECT,
     )
 
-    @property
-    def codigo(self):
-        return self.pk
+    tenante = models.ForeignKey(
+        "tenants.Tenant",
+        verbose_name=_("tenant"),
+        on_delete=models.PROTECT,
+    )
 
     @property
     def json(self):
@@ -75,10 +68,6 @@ class Base(models.Model):
 
     class Meta:
         abstract = True
-
-
-opcoes_zero_um = Base.opcoes_zero_um
-opcoes_sim_nao = Base.opcoes_sim_nao
 
 
 class Endereco(models.Model):
