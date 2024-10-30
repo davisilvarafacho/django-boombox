@@ -1,19 +1,27 @@
-import os
 import json
 import uuid
 import pika
+import logging
+
+from utils.env import get_env_var
+
+logger = logging.getLogger("api")
 
 
 class ConnectionAMQP:
     def __init__(self):
-        host = os.environ.get('RABBITMQ_HOST')
-        usuario = os.environ.get('RABBITMQ_USER')
-        senha = os.environ.get('RABBITMQ_PSSWD')
-        porta = os.environ.get('RABBITMQ_PORT')
+        connection_string = get_env_var("RABBITMQ_CONNECTION_STRING")
+        self.connection = pika.BlockingConnection(pika.URLParameters(connection_string))
+        self.channel = self.connection.channel()
 
-        credentials = pika.PlainCredentials(usuario, senha)
-        self.conn = pika.BlockingConnection(pika.ConnectionParameters(host, porta, '/', credentials))
-        self.channel = self.conn.channel()
+    def close_channel(self):
+        logger.info("Fechando o canal de comunicação com o servidor AMQP...")
+        self.channel.close()
+
+    def close_connection(self):
+        if self.connection.is_open:
+            logger.info("Fechando conexão com o servidor AMQP...")
+            self.connection.close()
 
 
 class Consumer(ConnectionAMQP):
@@ -24,14 +32,14 @@ class Consumer(ConnectionAMQP):
         self.channel.queue_declare(queue=self.queue)
 
     def start_server(self):
-        self.channel.basic_consume(queue=self.queue, on_message_callback=self.callback, auto_ack=True)
-        print('[*] Iniciando consumo da queue "%s"...' % self.queue)
-        print('[*] Aguardando mensagens. Para sair pressione CTRL+C')
+        self.channel.basic_consume(queue=self.queue, on_message_callback=self.callback, auto_ack=False)
+        logger.info('Iniciando consumo da queue "%s"' % self.queue)
+        logger.info("Aguardando mensagens. Para sair pressione CTRL+C")
         self.channel.start_consuming()
 
     @staticmethod
     def byte2str(data):
-        return data.decode('utf-8')
+        return data.decode("utf-8")
 
     @staticmethod
     def byte2dict(data):
@@ -47,19 +55,19 @@ class Publisher(ConnectionAMQP):
         self.routing_key = routing_key
         self.channel.queue_declare(queue=self.routing_key)
 
-    def publish(self, body=''):
-        print('[*] Publicando mensagem na queue "%s"...' % self.routing_key)
+    def publish(self, body=""):
+        logger.info('Publicando mensagem na queue "%s"...' % self.routing_key)
         if isinstance(body, dict):
-            body = str(body)
-
+            body = json.dumps(body)
+        
         self.channel.basic_publish(
-            exchange='',
+            exchange="",
             routing_key=self.routing_key,
             body=body,
         )
 
     def config_rpc(self):
-        queue_info = self.channel.queue_declare(queue='', exclusive=True)
+        queue_info = self.channel.queue_declare(queue="", exclusive=True)
         self.callback_queue = queue_info.method.queue
 
         self.channel.basic_consume(
@@ -70,18 +78,18 @@ class Publisher(ConnectionAMQP):
 
     def _on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
-            self.response = body.decode('utf-8')
+            self.response = body.decode("utf-8")
 
-    def rpc_publish(self, body=''):
-        print('[*] Publicando mensagem na queue "%s"...' % self.routing_key)
+    def rpc_publish(self, body=""):
+        logger.info('Publicando mensagem na queue "%s"...' % self.routing_key)
         if isinstance(body, dict):
             body = str(body)
-        
-        self.response = None 
-        self.corr_id = str(uuid.uuid4())        
-        
+
+        self.response = None
+        self.corr_id = str(uuid.uuid4())
+
         self.channel.basic_publish(
-            exchange='',
+            exchange="",
             routing_key=self.routing_key,
             body=body,
             properties=pika.BasicProperties(
@@ -91,13 +99,13 @@ class Publisher(ConnectionAMQP):
         )
 
         while self.response is None:
-            self.conn.process_data_events()
+            self.connection.process_data_events()
 
         return self.response
 
     @staticmethod
     def byte2str(data):
-        return data.decode('utf-8')
+        return data.decode("utf-8")
 
     @staticmethod
     def byte2dict(data):
