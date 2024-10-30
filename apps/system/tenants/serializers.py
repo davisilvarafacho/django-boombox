@@ -1,9 +1,9 @@
-from rest_framework import serializers
+from apps.system.base.serializers import BaseModelSerializer
+
+from .models import Tenant
 
 
-class CriarTenantSerialier(serializers.Serializer):
-    nome_banco_dados = serializers.CharField()
-    email_usuario = serializers.EmailField()
-    senha_usuario = serializers.CharField()
-    nome_usuario = serializers.CharField()
-    sobrenome_usuario = serializers.CharField()
+class TenantSerializer(BaseModelSerializer):
+    class Meta:
+        model = Tenant
+        fields = "__all__"
