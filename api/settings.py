@@ -54,6 +54,16 @@ ADMINS = [("Davi Silva Rafacho", "davi.s.rafacho@gmail.com")]
 MANAGERS = ADMINS
 
 
+if IN_PRODUCTION:
+    import sentry_sdk
+
+    sentry_sdk.init(
+        dsn=get_env_var("SENTRY_DSN"),
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+    )
+
+
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
