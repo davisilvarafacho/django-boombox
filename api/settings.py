@@ -289,7 +289,7 @@ LOGGING = {
             "level": "DEBUG",
             "class": "logging.handlers.SysLogHandler",
             "formatter": "cloud_formatter",
-            "address": ("subdomain.logs.com", 12345),
+            "address": (get_env_var("PAPERTRAIL_HOSTNAME"), get_env_var("PAPERTRAIL_PORT")),
         },
     },
     "loggers": {
@@ -339,24 +339,6 @@ if IN_PRODUCTION:
 AUTH_QUERY_PARAM_NAME = "jwt"
 
 
-MULTITENANCY_DATABASE_PREFIX = "boombox"
-
-
-RABBITMQ_HOST = get_env_var("RABBITMQ_HOST")
-
-RABBITMQ_USER = get_env_var("RABBITMQ_USER")
-
-RABBITMQ_PSSWD = get_env_var("RABBITMQ_PSSWD")
-
-RABBITMQ_PORT = get_env_var("RABBITMQ_PORT")
-
-
-CORS_ALLOW_ALL_ORIGINS = True
-
-
-HEADLESS_ONLY = True
-
-
 REST_FRAMEWORK = {
     "PAGE_SIZE": 30,
     "DEFAULT_PAGINATION_CLASS": "apps.system.core.pagination.CustomPagination",
@@ -387,9 +369,8 @@ SIMPLE_JWT = {
     "ISSUER": None,
 }
 
-CACHALOT_QUERY_KEYGEN = "apps.system.tenants.cache.gen_query_cache_key"
 
-CACHALOT_TABLE_KEYGEN = "apps.system.tenants.cache.gen_query_table_key"
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 AXES_FAILURE_LIMIT = 7
