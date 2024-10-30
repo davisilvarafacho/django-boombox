@@ -47,12 +47,21 @@ CSRF_TRUSTED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = []
 
 
+SITE_ID = 1
+
+ADMINS = [("Davi Silva Rafacho", "davi.s.rafacho@gmail.com")]
+
+MANAGERS = ADMINS
+
+
 DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.postgres",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
 ]
 
