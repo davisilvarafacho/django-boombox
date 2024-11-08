@@ -19,6 +19,7 @@ django-threadlocals==0.10
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 drf-extensions==0.7.1
+drf-flex-fields==1.0.2
 drf-spectacular==0.27.2
 exceptiongroup==1.2.2
 gitdb==4.0.11

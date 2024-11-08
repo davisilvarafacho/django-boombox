@@ -304,16 +304,19 @@ if IN_PRODUCTION:
     LOGGING["root"]["handlers"] += ["api_cloud_log", "api_errors_mail"]
 
 
+# django-boombox
 AUTH_QUERY_PARAM_NAME = "jwt"
 
 TENANT_HOST_HEADER = "X-Tenant-Host"
 
 
+# corsheaders
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [TENANT_HOST_HEADER]
 
 
+# rest_framework
 REST_FRAMEWORK = {
     "PAGE_SIZE": 30,
     "DEFAULT_PAGINATION_CLASS": "apps.system.core.pagination.CustomPagination",
@@ -330,6 +333,7 @@ REST_FRAMEWORK = {
 }
 
 
+# rest_framework_simplejwt
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 1),
@@ -345,6 +349,7 @@ SIMPLE_JWT = {
 }
 
 
+# django-axes
 AXES_FAILURE_LIMIT = 7
 
 AXES_COOLOFF_TIME = datetime.timedelta(minutes=30)
@@ -352,3 +357,13 @@ AXES_COOLOFF_TIME = datetime.timedelta(minutes=30)
 AXES_RESET_ON_SUCCESS = True
 
 AXES_USERNAME_FORM_FIELD = "login"
+
+
+# drf-flex-fields
+EXPAND_PARAM = "display"
+
+MAXIMUM_EXPANSION_DEPTH = 3
+
+FIELDS_PARAM = "fields"
+
+OMIT_PARAM = "supress"
