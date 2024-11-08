@@ -75,7 +75,6 @@ LIBS_APPS = [
     "cachalot",
     "corsheaders",
     "django_filters",
-    "django_extensions",
     "rest_framework",
 ]
 
@@ -83,6 +82,7 @@ BOOMBOX_APPS = [
     "apps.system.base",
     "apps.system.core",
     "apps.system.conf",
+    "apps.system.tenants",
     "apps.users",
 ]
 
@@ -106,6 +106,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "api.urls"
 
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -121,6 +122,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = "api.wsgi.application"
 
@@ -290,12 +292,13 @@ LOGGING = {
             "formatter": "error_formatter",
             "filters": ["error_filter"],
         },
-        "api_cloud_log": {
-            "level": "DEBUG",
-            "class": "logging.handlers.SysLogHandler",
-            "formatter": "cloud_formatter",
-            "address": (get_env_var("PAPERTRAIL_HOSTNAME"), get_env_var("PAPERTRAIL_PORT")),
-        },
+        # descomente somente se for utilizar o papertrail
+        # "api_cloud_log": {
+        #     "level": "DEBUG",
+        #     "class": "logging.handlers.SysLogHandler",
+        #     "formatter": "cloud_formatter",
+        #     "address": (get_env_var("PAPERTRAIL_HOSTNAME"), get_env_var("PAPERTRAIL_PORT")),
+        # },
     },
 }
 

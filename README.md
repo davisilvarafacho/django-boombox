@@ -224,22 +224,22 @@ Até a construação de CLI, vou tentar deixar o mais explícito e claro possív
 
 ## Frameworks e bibliotecas utilizados
 
-1. [django](https://github.com/django/django)
-1. [psycopg2](https://github.com/psycopg/psycopg2)
-1. [django-rest-framework](https://github.com/encode/django-rest-framework)
-1. [djangorestframework-simplejwt](https://github.com/jazzband/djangorestframework-simplejwt)
-1. [django-cors-headers](https://github.com/adamchainz/django-cors-headers)
-1. [django-rest-knox](https://github.com/jazzband/django-rest-knox)
-1. [django-filter](https://github.com/carltongibson/django-filter)
-1. [django-redis](https://github.com/jazzband/django-redis)
-1. [django-extensions](https://github.com/django-extensions/django-extensions)
-1. [redis-py](https://github.com/redis/redis-py)
-1. [django-auditlog](https://github.com/jazzband/django-auditlog)
-1. [drf-spectacular](https://github.com/tfranzel/drf-spectacular)
-1. [drf-extensions](https://github.com/chibisov/drf-extensions)
-1. [django-allauth](https://github.com/pennersr/django-allauth)
-1. [pika](https://github.com/pika/pika)
-1. [httpx](https://github.com/projectdiscovery/httpx)
+1. django
+1. djangorestframework
+1. djangorestframework-simplejwt
+1. django-cachalot
+1. django-auditlog
+1. django-cors-headers
+1. django-multitenant
+1. django-filter
+1. django-threadlocals
+1. django-redis
+1. httpx
+1. pika
+1. pillow
+1. psycopg2-binary
+1. python-dotenv
+1. sentry-sdk
 
 ### Insipiração
 
