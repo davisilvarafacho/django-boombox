@@ -72,6 +72,7 @@ DJANGO_APPS = [
 
 LIBS_APPS = [
     "auditlog",
+    "axes",
     "cachalot",
     "corsheaders",
     "django_filters",
@@ -104,6 +105,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "apps.system.core.middlewares.TenantMiddleware",
     "auditlog.middleware.AuditlogMiddleware",
+    "axes.middleware.AxesMiddleware",
 ]
 
 
@@ -170,6 +172,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 AUTH_USER_MODEL = "users.Usuario"
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 
 DATE_FORMAT = "d/m/Y"
