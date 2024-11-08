@@ -1,8 +1,8 @@
+from django.conf import settings
 from django.db.models import ProtectedError
 
 from rest_framework import status
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
 
@@ -40,6 +40,17 @@ class BaseModelViewSet(ModelViewSet):
     filterset_fields = {}
     search_fields = []
     ordering_fields = []
+    foreign_keys_fields = []
+
+    def get_serializer_flex_params(self):
+        mostrar = settings.EXPAND_PARAM
+        campos = settings.FIELDS_PARAM
+        suprimir = settings.OMIT_PARAM
+        return {
+            mostrar: self.request.query_params.get(mostrar, []),
+            campos: self.request.query_params.get(campos, []),
+            suprimir: self.request.query_params.get(suprimir, []),
+        }
 
     def get_object(self):
         instance = super().get_object()
@@ -54,6 +65,12 @@ class BaseModelViewSet(ModelViewSet):
         aditional_context = self.get_aditional_serializer_context()
         return {"action": self.action, **context, **aditional_context}
 
+    def get_serializer(self, *args, **kwargs):
+        serializer_class = self.get_serializer_class()
+        kwargs.setdefault('context', self.get_serializer_context())
+        kwargs.update(self.get_serializer_flex_params())
+        return serializer_class(*args, **kwargs)
+
     def perform_create(self, serializer, **overwrite):
         serializer.save(owner=self.request.user, **overwrite)
 
@@ -65,7 +82,9 @@ class BaseModelViewSet(ModelViewSet):
 
         except ProtectedError:
             return Response(
-                {"mensagem": "Esse registro não pode ser excluído por estar vínculado a outro registro na base de dados"},
+                {
+                    "mensagem": "Esse registro não pode ser excluído por estar vínculado a outro registro na base de dados"
+                },
                 status=status.HTTP_409_CONFLICT,
             )
 
@@ -89,6 +108,5 @@ class BaseModelViewSet(ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def alterar_campos_unicos(self, instance):
-        """Método para alterar campos com `unique=True` na action `clonar
-        """
+        """Método para alterar campos com `unique=True` na action `clonar"""
         pass
