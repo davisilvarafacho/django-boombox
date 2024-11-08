@@ -7,7 +7,7 @@ from django.urls import path, include
 apps_urls = [path("api/", include(app + ".urls")) for app in settings.BOOMBOX_APPS]
 
 urlpatterns = [
-    path("admin/", admin.site.urls),    
+    path("admin/", admin.site.urls),
     *apps_urls,
 ]
 
