@@ -19,7 +19,7 @@ class Base(TenantModel):
     sistema, como data e hora de criação e alteração.
     """
 
-    tenant_id = "tenante_id"
+    tenant_id = "ambiente_id"
     
     ativo = models.CharField(
         _("ativo"),
@@ -54,7 +54,7 @@ class Base(TenantModel):
         on_delete=models.PROTECT,
     )
 
-    tenante = models.ForeignKey(
+    ambiente = models.ForeignKey(
         "tenants.Tenant",
         verbose_name=_("tenant"),
         on_delete=models.PROTECT,
