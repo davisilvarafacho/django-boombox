@@ -8,6 +8,8 @@ from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 from django.utils.translation import gettext_lazy as _
 
+from corsheaders.defaults import default_headers
+
 from utils.env import get_bool_from_env, get_env_var
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,20 +33,14 @@ if not SECRET_KEY and DEBUG:
 
 
 ALLOWED_HOSTS = [
-    # dev
     "127.0.0.1",
     "localhost",
-    # prod
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    # dev
     "http://127.0.0.1:8000",
     "http://localhost:8000",
-    # prod
 ]
-
-CSRF_TRUSTED_ORIGINS = []
 
 
 SITE_ID = 1
@@ -217,12 +213,11 @@ EMAIL_HOST_PASSWORD = get_env_var("EMAIL_PASSWORD")
 DEFAULT_FROM_EMAIL = None
 
 
-
 LOGGING_ROOT = os.path.join(BASE_DIR, "logs/")
 
 LOGGING = {
     "version": 1,
-    # "disable_existing_loggers": False,
+    "disable_existing_loggers": False,
     "formatters": {
         "simple": {"format": "%(levelname)s %(message)s"},
         "verbose": {
@@ -238,7 +233,7 @@ LOGGING = {
             "datefmt": "%Y-%m-%dT%H:%M:%S",
         },
         "cloud_formatter": {
-            "format": "%(asctime)s id-zettabyte %(name)s: [%(levelname)s] %(message)s",
+            "format": "%(asctime)s boombox %(name)s: [%(levelname)s] %(message)s",
             "datefmt": "%Y-%m-%dT%H:%M:%S",
         },
     },
@@ -302,51 +297,21 @@ LOGGING = {
             "address": (get_env_var("PAPERTRAIL_HOSTNAME"), get_env_var("PAPERTRAIL_PORT")),
         },
     },
-    "loggers": {
-        "": {
-            "handlers": ["api_activity", "api_errors"],
-            "level": get_env_var("DJANGO_LOG_LEVEL"),
-            "propagate": True,
-        },
-        "django": {
-            "handlers": ["console"],
-            "level": get_env_var("DJANGO_LOG_LEVEL"),
-            "propagate": False,
-        },
-        "axes": {
-            "handlers": ["console"],
-            "level": get_env_var("DJANGO_LOG_LEVEL"),
-            "propagate": False,
-        },
-        "api": {
-            "handlers": ["api_activity", "api_errors"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
-        "warning": {
-            "handlers": ["api_warnings"],
-            "level": "WARNING",
-            "propagate": False,
-        },
-        "error": {
-            "handlers": ["api_errors", "console"],
-            "level": "ERROR",
-            "propagate": False,
-        },
-        "cloud": {
-            "handlers": ["api_cloud_log"],
-            "level": "DEBUG",
-            "propagate": False,
-        },
-    },
 }
 
 
 if IN_PRODUCTION:
-    LOGGING["loggers"][""]["handlers"] += ["api_cloud_log", "api_errors_mail"]
+    LOGGING["root"]["handlers"] += ["api_cloud_log", "api_errors_mail"]
 
 
 AUTH_QUERY_PARAM_NAME = "jwt"
+
+TENANT_HOST_HEADER = "X-Tenant-Host"
+
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [TENANT_HOST_HEADER]
 
 
 REST_FRAMEWORK = {
@@ -378,9 +343,6 @@ SIMPLE_JWT = {
     "AUDIENCE": None,
     "ISSUER": None,
 }
-
-
-CORS_ALLOW_ALL_ORIGINS = True
 
 
 AXES_FAILURE_LIMIT = 7
