@@ -55,8 +55,8 @@ class Base(TenantModel):
     )
 
     ambiente = models.ForeignKey(
-        "tenants.Tenant",
-        verbose_name=_("tenant"),
+        "tenants.Ambiente",
+        verbose_name=_("ambiente"),
         on_delete=models.PROTECT,
     )
 
