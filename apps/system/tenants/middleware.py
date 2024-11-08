@@ -33,11 +33,12 @@ class TenantMiddleware:
         return self.get_response(request)
 
     def get_tenant(self, request: WSGIRequest) -> tuple[Ambiente | None, str]:
-        host = self.get_host(request).split(".")[0]
+        host = self.get_host(request)
 
         if host is None:
             return None, ""
 
+        host = host.split(":")[0]
         tenant = Ambiente.objects.filter(mb_subdominio=host).first()
         return tenant, host
 
