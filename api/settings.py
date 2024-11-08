@@ -344,6 +344,8 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ),
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
 }
 
 
