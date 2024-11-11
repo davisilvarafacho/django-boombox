@@ -1,30 +1,83 @@
-name: Django CI
+name: Django API Tests
 
-on:
+on: 
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: ["3.10"]
+
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: wcommanda
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:6
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      # django
+      DJANGO_SECRET_KEY: '0%_nx-59f-y+jkfx&)yu6ly)!uty)s-c6o+jqzhp39&l1v%4)y'
+      DJANGO_DEBUG: 'True'
+      DJANGO_MODE: development
+      DJANGO_EXECUTION_MODE: safety
+      DJANGO_LOG_LEVE: INFO
+
+      # database
+      DATABASE_HOST: localhost
+      DATABASE_NAME: wcommanda
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+
+      # redis
+      REDIS_HOST: localhost
+      REDIS_PORT: 6379
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Configurando ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Baixar Dependências
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Create logs directory
+        run: |
+          mkdir -p logs
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Apply migrations
+        run: |
+          python manage.py migrate
+
+      - name: Run tests
+        run: |
+          python manage.py test tests
