@@ -5,7 +5,7 @@ pipeline {
         stage ('Build') {
             steps {
                 script {
-                    dockerapp = docker.build("davisilvarafacho/django-boombox:${env.BUILD_ID}", '-f ./docker/Dockerfile ./')
+                    dockerapp = docker.build("rafacho/django-boombox:${env.BUILD_ID}", '-f ./docker/Dockerfile ./')
                 }
             }
         }
