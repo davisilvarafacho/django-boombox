@@ -2,9 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage ('Inicial') {
+        stage ('Build') {
             steps {
-                echo 'Iniciando pipeline'
+                script {
+                    dockerapp = docker.build("davisilvarafacho/django-boombox:${env.BUILD_ID}", '-f ./Dockerfile ./')
+                }
+            }
+        }
+
+        stage ('Push Image') {
+            steps {
+                script {
+                    docker.withRegistry("https://registry.hub.docker.com", 'dockerhub') {
+                        dockerapp.push('latest')
+                        dockerapp.push('${env.BUILD_ID}')
+                    }
+                }
             }
         }
     }   
