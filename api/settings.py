@@ -45,7 +45,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 SITE_ID = 1
 
-ADMINS = [("Davi Silva Rafacho", "davi.s.rafacho@gmail.com")]
+ADMINS = [("Nome Completo", "user@gmail.com")]
 
 MANAGERS = ADMINS
 
@@ -103,7 +103,6 @@ MIDDLEWARE = [
     "django.middleware.locale.LocaleMiddleware",
     "threadlocals.middleware.ThreadLocalMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "apps.system.core.middlewares.TenantMiddleware",
     "auditlog.middleware.AuditlogMiddleware",
     "axes.middleware.AxesMiddleware",
 ]
