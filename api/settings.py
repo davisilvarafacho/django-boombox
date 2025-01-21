@@ -1,8 +1,7 @@
 import datetime
-import os
 import logging
+import os
 import warnings
-
 from pathlib import Path
 
 from django.core.management.utils import get_random_secret_key
@@ -28,7 +27,7 @@ EXECUTION = get_env_var("DJANGO_EXECUTION_MODE")
 
 
 if not SECRET_KEY and DEBUG:
-    warnings.warn("'SECRET_KEY' não foi configurada, using a random temporary key.")
+    warnings.warn("'SECRET_KEY' não foi configurada, using a random temporary key.", stacklevel=2)
     SECRET_KEY = get_random_secret_key()
 
 
@@ -80,6 +79,7 @@ LIBS_APPS = [
 ]
 
 BOOMBOX_APPS = [
+    "apps.system.configuracoes",
     "apps.system.base",
     "apps.system.core",
     "apps.system.conf",
@@ -173,10 +173,9 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = "users.Usuario"
 
 AUTHENTICATION_BACKENDS = [
-    'axes.backends.AxesBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "axes.backends.AxesBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
-
 
 
 DATE_FORMAT = "d/m/Y"
@@ -350,9 +349,9 @@ REST_FRAMEWORK = {
 
 # rest_framework_simplejwt
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("JWT",),
+    "AUTH_HEADER_TYPES": ("Bearer",),
     "ACCESS_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 1),
-    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 3),
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(days=365 if IN_DEVELOPMENT else 7),
     "TOKEN_OBTAIN_SERIALIZER": "apps.users.serializers.LoginSerializer",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
