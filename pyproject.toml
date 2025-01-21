@@ -79,7 +79,7 @@ line-length = 120
 
   [tool.ruff.lint.isort.sections]
   django = ["django"]
-  rest-framework = ["rest-framework"]
+  rest-framework = ["rest_framework"]
 
   [tool.ruff.lint.isort]
   known-first-party = ["apps"]
@@ -92,3 +92,7 @@ line-length = 120
     "first-party",
     "local-folder",
   ]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "api.settings"
+python_files = ["test_*.py", "*_test.py", "testing/python/*.py"]
