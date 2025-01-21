@@ -4,6 +4,7 @@ import os
 from typing import Literal
 
 EnviromentVar = Literal[
+    # api
     "DJANGO_SECRET_KEY",
     "DJANGO_DEBUG",
     "DJANGO_MODE",
@@ -15,17 +16,29 @@ EnviromentVar = Literal[
     "DATABASE_HOST",
     "DATABASE_PORT",
     "EMAIL_PASSWORD",
-    "RABBITMQ_CONNECTION_STRING",
     "REDIS_HOST",
     "REDIS_PORT",
-    "INTEGRATION_TOKEN",
+    # rabbit
+    "RABBITMQ_CONNECTION_STRING",
+    # cloudflare
     "CLOUDFLARE_API_TOKEN",
+    # sentry
     "SENTRY_DSN",
+    # google
     "GOOGLE_OAUTH2_CLIENT_ID",
     "GOOGLE_OAUTH2_CLIENT_SECRET",
     "GOOGLE_OAUTH2_PROJECT_ID",
+    # papertrail
     "PAPERTRAIL_HOSTNAME",
     "PAPERTRAIL_PORT",
+    # twilio
+    "TWILIO_ACCOUNT_SID",
+    "TWILIO_AUTH_TOKEN",
+    "TWILIO_PHONE_NUMBER",
+    # backblaze
+    "BACKBLAZE_APPLICATION_ID",
+    "BACKBLAZE_APPLICATION_KEY",
+    "BACKBLAZE_BUCKET_NAME",
 ]
 
 
@@ -39,5 +52,6 @@ def get_bool_from_env(name: EnviromentVar, default_value=False) -> bool:
         try:
             return ast.literal_eval(value)
         except ValueError as exc:
-            raise ValueError(f"'{value}' não é um valor válido para '{name}'") from exc
+            raise ValueError(
+                f"'{value}' não é um valor válido para '{name}'") from exc
     return default_value
