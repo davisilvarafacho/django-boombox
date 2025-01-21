@@ -1,16 +1,17 @@
-import logging
 import json
+import logging
 import os
 
-from django.db import transaction
 from django.utils.module_loading import import_string
+
+from django_multitenant.utils import set_current_tenant
+
+from apps.system.tenants.models import Ambiente
 
 logger = logging.getLogger(__name__)
 
 
 class DefaultRecord:
-    """Representação de um registro padrão do sistema."""
-
     def __init__(self, model, id_fields, active, raw_data):
         if isinstance(model, str):
             self.model = import_string(model)
@@ -38,14 +39,10 @@ class DefaultRecord:
 
     @property
     def exists(self):
-        """Sintax suggar for usage"""
-
         return self.model_instance is not None
 
     @property
     def inactive(self):
-        """Sintax suggar for usage"""
-
         return not self.active
 
     def create(self, **save_kwargs):
@@ -62,36 +59,33 @@ class DefaultRecord:
         instance.delete()
 
     def __str__(self):
-        ids = " ".join(
-            [f"{chave}='{valor}'" for chave, valor in self.identifiers.items()]
-        )
+        ids = " ".join([f"{chave}='{valor}'" for chave, valor in self.identifiers.items()])
         return f"<DefaultRecord model={self.model.__name__} {ids}>"
 
 
 class DefaultRecordsManger:
-    """Classe responsável por popular o banco de dados com os
-    dados padrões do sistema.
-    """
-
     default_records_path = "data/default/records/"
 
     def __init__(self):
         self.__cached_models = {}
 
+    def multitenant_apply_updates(self):
+        ambientes = Ambiente.objects.all()
+        for ambiente in ambientes:
+            set_current_tenant(ambiente)
+            self.apply_updates()
+
     def apply_updates(self):
         records = self.get_records()
-        with transaction.atomic():
-            ponto_restauracao = transaction.savepoint()
-            try:
-                for record in records:
-                    if record.active and not record.exists:
-                        record.create()
+        try:
+            for record in records:
+                if record.active and not record.exists:
+                    record.create()
 
-                    elif not record.active and record.exists:
-                        record.delete()
-            except Exception:
-                logger.error("[!] erro ao criar registro do sistema!")
-                transaction.savepoint_rollback(ponto_restauracao)
+                elif not record.active and record.exists:
+                    record.delete()
+        except Exception:
+            logger.error("Erro ao criar registro do sistema!")
 
     def get_records(self):
         files = self.get_files()
