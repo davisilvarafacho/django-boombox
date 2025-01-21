@@ -241,7 +241,7 @@ Até a construação de CLI, vou tentar deixar o mais explícito e claro possív
 1. python-dotenv
 1. sentry-sdk
 1. pytest
-1. backblaze r2 dsk
+1. b2sdk
 1. twilio
 1. django-lifecycle
 
