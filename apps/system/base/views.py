@@ -33,6 +33,14 @@ class BaseViewSet(GenericViewSet):
 
         return self.serializer_classes[self.action]
 
+    def get_aditional_serializer_context(self):
+        return {}
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        aditional_context = self.get_aditional_serializer_context()
+        return {"action": self.action, **context, **aditional_context}
+
 
 class BaseModelViewSet(ModelViewSet):
     serializer_classes = {}
@@ -68,7 +76,6 @@ class BaseModelViewSet(ModelViewSet):
     def get_serializer(self, *args, **kwargs):
         serializer_class = self.get_serializer_class()
         kwargs.setdefault('context', self.get_serializer_context())
-        kwargs.update(self.get_serializer_flex_params())
         return serializer_class(*args, **kwargs)
 
     def perform_create(self, serializer, **overwrite):
