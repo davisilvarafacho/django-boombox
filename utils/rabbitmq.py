@@ -1,7 +1,8 @@
 import json
-import uuid
-import pika
 import logging
+import uuid
+
+import pika
 
 from utils.env import get_env_var
 
@@ -33,7 +34,7 @@ class Consumer(ConnectionAMQP):
 
     def start_server(self):
         self.channel.basic_consume(queue=self.queue, on_message_callback=self.callback, auto_ack=False)
-        logger.info('Iniciando consumo da queue "%s"' % self.queue)
+        logger.info('Iniciando consumo da queue "%s"', self.queue)
         logger.info("Aguardando mensagens. Para sair pressione CTRL+C")
         self.channel.start_consuming()
 
@@ -56,10 +57,10 @@ class Publisher(ConnectionAMQP):
         self.channel.queue_declare(queue=self.routing_key)
 
     def publish(self, body=""):
-        logger.info('Publicando mensagem na queue "%s"...' % self.routing_key)
+        logger.info('Publicando mensagem na queue "%s"...', self.routing_key)
         if isinstance(body, dict):
             body = json.dumps(body)
-        
+
         self.channel.basic_publish(
             exchange="",
             routing_key=self.routing_key,
@@ -81,7 +82,7 @@ class Publisher(ConnectionAMQP):
             self.response = body.decode("utf-8")
 
     def rpc_publish(self, body=""):
-        logger.info('Publicando mensagem na queue "%s"...' % self.routing_key)
+        logger.info('Publicando mensagem na queue "%s"...', self.routing_key)
         if isinstance(body, dict):
             body = str(body)
 
