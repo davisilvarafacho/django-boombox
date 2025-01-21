@@ -28,6 +28,14 @@ class AuthViewSet(BaseViewSet):
     serializer_class = UsuarioSerializer
     authentication_classes = []
     permission_classes = [AllowAny]
+    serializer_classes = {
+        "cadastro": UsuarioSerializer,
+        "confirmar_email": ConfirmarEmailSerializer,
+        "reenviar_email_confirmacao": ReenviaEmailConfirmacaoSerializer,
+        "enviar_email_redefinicao_senha": EnviarEmailRedefinicaoSenhaSerializer,
+        "confirmar_codigo_redefinir_senha": ConfirmarCodigoRedefinirSenhaSerializer,
+        "redefinir_senha": RedefinirSenhaSerializer,
+    }
 
     @action(methods=["get"], detail=False)
     def validar_cadastro_email(self, request):
@@ -43,45 +51,41 @@ class AuthViewSet(BaseViewSet):
 
     @action(methods=["post"], detail=False)
     def cadastro(self, request):
-        serializer = UsuarioSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(methods=["post"], detail=False)
     def confirmar_email(self, request):
-        serializer = ConfirmarEmailSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=["post"], detail=False)
     def reenviar_email_confirmacao(self, request):
-        serializer = ReenviaEmailConfirmacaoSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(methods=["post"], detail=False)
     def enviar_email_redefinicao_senha(self, request):
-        serializer = EnviarEmailRedefinicaoSenhaSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response()
 
     @action(methods=["post"], detail=False)
     def confirmar_codigo_redefinir_senha(self, request):
-        serializer = ConfirmarCodigoRedefinirSenhaSerializer(
-            data=request.data, context={"request": self.request}
-        )
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         return Response()
 
     @action(methods=["post"], detail=False)
     def redefinir_senha(self, request):
-        serializer = RedefinirSenhaSerializer(
-            data=request.data, context={"request": self.request}
-        )
+        serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response()
