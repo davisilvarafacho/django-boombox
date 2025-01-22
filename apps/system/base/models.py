@@ -12,11 +12,6 @@ from django_multitenant.models import TenantModel
 from threadlocals.threadlocals import get_current_user
 
 
-class SimNao(models.IntegerChoices):
-    NAO = 1, _("Não")
-    SIM = 2, _("Sim")
-
-
 class Base(TenantModel):
     tenant_id = "ambiente_id"
 
@@ -53,11 +48,8 @@ class Base(TenantModel):
         if not hasattr(self, "owner"):
             self.owner = get_current_user()
 
-        last = self.__class__.objects.all().order_by("codigo").last()
-        if last:
-            self.codigo = last.codigo + 1
-        else:
-            self.codigo = 1
+        maior_codigo = self.__class__.objects.all().aggregate(codigo=models.Max("codigo"))["codigo"] or 0
+        self.codigo = maior_codigo + 1
 
         return super().save(*args, **kwargs)
 
