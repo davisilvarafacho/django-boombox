@@ -1,6 +1,5 @@
 import ast
 import os
-
 from typing import Literal
 
 EnviromentVar = Literal[
@@ -43,7 +42,7 @@ EnviromentVar = Literal[
 
 
 def get_env_var(key: EnviromentVar) -> str:
-    return os.environ.get(key)
+    return os.environ.get(key) # type: ignore
 
 
 def get_bool_from_env(name: EnviromentVar, default_value=False) -> bool:
