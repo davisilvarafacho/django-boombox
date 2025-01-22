@@ -15,7 +15,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: wcommanda
+          POSTGRES_DB: django-boombox
         ports:
           - 5432:5432
         options: >-
@@ -43,7 +43,7 @@ jobs:
 
       # database
       DATABASE_HOST: localhost
-      DATABASE_NAME: wcommanda
+      DATABASE_NAME: django-boombox
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_PORT: 5432
