@@ -33,6 +33,10 @@ class Base(TenantModel):
         data = model_to_dict(self)
         return json.dumps(data, default=str)
 
+    @property
+    def model_content_type(self):
+        return ContentType.objects.get_for_model(self)
+
     def get_historico_alteracoes(self):
         content_type = ContentType.objects.get_for_model(self)
         return LogEntry.objects.filter(content_type=content_type, object_id=self.pk).order_by("-timestamp")
